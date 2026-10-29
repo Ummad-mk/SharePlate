@@ -327,6 +327,147 @@ h1, h2, h3, h4, h5, h6, p, span, div, a, button {
   }
 }
 
+/* --------------------------------------------------------------------------
+   Mobile usability pass (tap targets, readable type, dropdowns, KPI grid)
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+  /* iOS Safari zooms the page when a focused field is < 16px */
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+  select,
+  textarea,
+  .form-control,
+  select.form-control,
+  textarea.form-control {
+    font-size: 16px;
+  }
+
+  /* Notification dropdown was anchored to the bell (right:0, 320px wide) and
+     ran ~95px off the left edge on a 375px phone. Pin it to the viewport
+     edges instead (the navbar is its containing block). */
+  .notification-dropdown {
+    position: fixed;
+    top: calc(var(--navbar-height) + 4px);
+    left: 8px;
+    right: 8px;
+    width: auto;
+    max-width: none;
+  }
+
+  /* Comfortable tap targets */
+  .navbar .brand-logo {
+    min-height: 40px;
+  }
+
+  input[type="range"] {
+    min-height: 32px;
+  }
+
+  .btn-sm {
+    min-height: 36px;
+  }
+
+  .filter-pill {
+    min-height: 36px;
+  }
+
+  .site-footer a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+  }
+
+  .footer-links li {
+    margin-block: 2px;
+  }
+
+  .mobile-nav-drawer .nav-link {
+    min-height: 44px;
+  }
+
+  /* Never let 10px helper text shrink further on phones */
+  .badge,
+  .role-badge,
+  .admin-sub-tag {
+    font-size: 11px;
+  }
+
+  /* Long words/URLs inside cards should wrap instead of pushing width */
+  .card-title,
+  .card-meta span {
+    overflow-wrap: anywhere;
+  }
+
+  img,
+  video,
+  canvas,
+  iframe {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Leaflet tiles/markers must keep their intrinsic sizing */
+  .leaflet-container img {
+    max-width: none !important;
+    height: auto;
+  }
+
+  dialog.modal {
+    width: calc(100vw - 24px);
+    max-width: calc(100vw - 24px);
+    max-height: calc(100dvh - 24px);
+    overflow-y: auto;
+  }
+}
+
+@media (max-width: 420px) {
+  /* Was shrunk to 28px; keep the logout control tappable */
+  #logout-btn {
+    min-height: 36px;
+    min-width: 36px;
+    padding: 0.25rem;
+    justify-content: center;
+  }
+
+  .hamburger-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .btn-icon {
+    width: 34px;
+    height: 34px;
+  }
+}
+
+@media (max-width: 340px) {
+  /* Very narrow phones (Galaxy Fold / 320px): give icons room */
+  .logo-text {
+    display: none;
+  }
+}
+
+/* Four KPI cards: avoid the 3 + 1 orphan row on desktop */
+@media (min-width: 1024px) {
+  .kpi-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .kpi-card {
+    padding: var(--space-md);
+    gap: var(--space-sm);
+    min-width: 0;
+  }
+
+}
+
+/* Admin console has a 260px sidebar, so 4 columns are too narrow until very
+   wide screens: use a 2 x 2 grid there instead (was 3 + 1 orphan). */
+@media (min-width: 1024px) and (max-width: 1439px) {
+  .admin-main .kpi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 /* Print Styles */
 @media print {
   .navbar, .bottom-tab-bar, .admin-sidebar, .btn, .filter-toolbar, .mobile-nav-backdrop, .mobile-nav-drawer {
