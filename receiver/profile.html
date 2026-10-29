@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shelter Profile & Capacity - SharePlate</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Favicon / Brand Icons -->
+  <link rel="icon" type="image/x-icon" href="../assests/shareplate_logo.ico">
+  <link rel="icon" type="image/svg+xml" href="../assests/shareplate_logo.svg">
+  <link rel="apple-touch-icon" href="../assests/shareplate_logo.png">
+
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="dashboard-body">
+
+  <header class="navbar" role="banner">
+    <div class="container nav-container">
+      <a href="../index.html" class="brand-logo" aria-label="SharePlate Home">
+        <img src="../assests/shareplate_logo.svg" alt="SharePlate Logo" class="brand-logo-img" width="36" height="36">
+        <span class="logo-text">Share<span>Plate</span></span>
+      </a>
+
+      <nav class="nav-menu" aria-label="Receiver Navigation">
+        <a href="feed.html" class="nav-link">Surplus Feed</a>
+        <a href="map.html" class="nav-link">Food Map</a>
+        <a href="claims.html" class="nav-link">My Claims</a>
+        <a href="profile.html" class="nav-link active">Shelter Profile</a>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="btn-icon theme-toggle-btn" aria-label="Toggle Dark Mode">
+          <span class="theme-icon-moon">🌙</span>
+          <span class="theme-icon-sun" style="display:none;">☀️</span>
+        </button>
+        <div id="user-nav-profile"></div>
+
+        <!-- Mobile Hamburger Button -->
+        <button class="hamburger-btn" aria-label="Toggle navigation menu" aria-expanded="false">
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Right-to-Left Slide Drawer -->
+    <div class="mobile-nav-drawer" role="navigation" aria-label="Mobile Navigation">
+      <a href="feed.html" class="nav-link">🤝 Surplus Food Feed</a>
+      <a href="map.html" class="nav-link">🗺️ Food Rescue Map</a>
+      <a href="claims.html" class="nav-link">📋 My Food Claims</a>
+      <a href="profile.html" class="nav-link active">🏢 Shelter Profile</a>
+      <hr style="border:none;border-top:1px solid var(--color-border);margin-block:var(--space-2xs);">
+      <a href="../donor/dashboard.html" class="nav-link">🍲 Donor Portal</a>
+      <a href="../volunteer/tasks.html" class="nav-link">🚴 Volunteer Portal</a>
+      <a href="../admin/dashboard.html" class="nav-link">⚡ Admin Console</a>
+      <a href="../index.html" class="nav-link">🏠 Public Home</a>
+    </div>
+  </header>
+
+  <main class="dashboard-main">
+    <div class="container" style="max-width:820px; padding-top:var(--space-lg);">
+      <div style="margin-bottom:var(--space-lg);">
+        <h1 style="font-size:var(--font-size-2xl);">Shelter Profile & Verification</h1>
+        <p style="font-size:var(--font-size-sm); color:var(--color-text-secondary);">
+          Keep your resident headcount and intake capacity updated to receive matched food alerts.
+        </p>
+      </div>
+
+      <!-- Identity Card -->
+      <div class="card" style="padding:var(--space-xl); margin-bottom:var(--space-xl); display:flex; flex-direction:row; gap:var(--space-lg); align-items:center; flex-wrap:wrap;">
+        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=260&q=80" alt="NGO Lead" style="width:100px; height:100px; border-radius:50%; object-fit:cover; border:3px solid var(--color-primary);">
+        <div style="flex:1; min-width:240px;">
+          <div class="flex-between" style="flex-wrap:wrap; gap:4px;">
+            <h2 style="font-size:var(--font-size-xl);">Edhi Foundation Shelter Home Lahore</h2>
+            <span class="badge badge-safe">✓ Verified Non-Profit NGO</span>
+          </div>
+          <div style="font-size:var(--font-size-sm); color:var(--color-text-secondary); margin-top:4px;">
+            📍 Allama Iqbal Town Center, Lahore • Reg #EDHI-LHR-1987-04
+          </div>
+          <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:var(--space-sm);">
+            <span class="badge badge-primary">👥 120 Residents Capacity</span>
+            <span class="badge badge-saffron">🍲 3,450 Meals Received</span>
+            <span class="badge badge-safe">🛡️ PFA Inspected Pantry</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Preferences Form -->
+      <div class="form-card">
+        <h3 style="font-size:var(--font-size-lg); margin-bottom:var(--space-md);">Shelter Operating Information</h3>
+        <form id="shelter-edit-form">
+          <div class="grid-cols-2">
+            <div class="form-group">
+              <label class="form-label" for="shelter-name">Shelter / Organization Name</label>
+              <input type="text" id="shelter-name" class="form-control" value="Edhi Foundation Shelter Home Lahore">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="shelter-lead">Authorized Receiver Name</label>
+              <input type="text" id="shelter-lead" class="form-control" value="Fatima Begum & Care Team">
+            </div>
+          </div>
+
+          <div class="grid-cols-2">
+            <div class="form-group">
+              <label class="form-label" for="shelter-capacity">Daily Meal Capacity (Portions)</label>
+              <input type="number" id="shelter-capacity" class="form-control" value="120">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="dietary-pref">Dietary Preference Focus</label>
+              <select id="dietary-pref" class="form-control">
+                <option value="all" selected>Any hygienic nutritious food</option>
+                <option value="halal">Halal Verified Cooked Meals</option>
+                <option value="veg">Vegetables & Pulses Focus</option>
+                <option value="kids">Child-friendly mild spices</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="shelter-address">Delivery Gate & Instructions</label>
+            <input type="text" id="shelter-address" class="form-control" value="Gate 1 Relief Intake Desk, Edhi Home, Main Boulevard, Allama Iqbal Town, Lahore">
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-md" style="margin-top:var(--space-xs);">
+            Update Shelter Profile
+          </button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <!-- Mobile Bottom Tab Bar -->
+  <nav class="bottom-tab-bar" aria-label="Mobile Bottom Navigation">
+    <a href="feed.html" class="tab-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="8" y1="6" x2="21" y2="6"/>
+        <line x1="8" y1="12" x2="21" y2="12"/>
+        <line x1="8" y1="18" x2="21" y2="18"/>
+        <line x1="3" y1="6" x2="3.01" y2="6"/>
+        <line x1="3" y1="12" x2="3.01" y2="12"/>
+        <line x1="3" y1="18" x2="3.01" y2="18"/>
+      </svg>
+      <span>Feed</span>
+    </a>
+    <a href="map.html" class="tab-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/>
+        <line x1="8" y1="2" x2="8" y2="18"/>
+        <line x1="16" y1="6" x2="16" y2="22"/>
+      </svg>
+      <span>Map</span>
+    </a>
+    <a href="claims.html" class="tab-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+        <polyline points="22 4 12 14.01 9 11.01"/>
+      </svg>
+      <span>Claims</span>
+    </a>
+    <a href="profile.html" class="tab-item active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+      <span>Profile</span>
+    </a>
+  </nav>
+
+  <script src="../js/data.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/ui.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      SharePlateAuth.requireAuth(['receiver']);
+
+      document.getElementById('shelter-edit-form')?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        SharePlateUI.toast('Shelter profile and capacity preferences updated!', 'success');
+      });
+    });
+  </script>
+</body>
+</html>

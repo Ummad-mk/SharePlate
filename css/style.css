@@ -1,0 +1,410 @@
+/* ==========================================================================
+   SharePlate Master Stylesheet
+   Imports modular styles & defines Home & Landing Sections
+   ========================================================================== */
+
+@import url('./variables.css');
+@import url('./base.css');
+@import url('./components.css');
+@import url('./navigation.css');
+@import url('./dashboard.css');
+@import url('./responsive.css');
+
+/* --------------------------------------------------------------------------
+   Hero Section
+   -------------------------------------------------------------------------- */
+.hero-section {
+  position: relative;
+  min-height: 85vh;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, rgba(20, 63, 51, 0.94) 0%, rgba(31, 92, 74, 0.85) 60%, rgba(200, 90, 50, 0.5) 100%),
+              url('https://images.unsplash.com/photo-1543339308-43e59d6b73a6?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+  color: #FFFFFF;
+  padding-block: var(--space-3xl);
+  overflow: hidden;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 740px;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: 0.4rem 1rem;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--color-saffron-light);
+  margin-bottom: var(--space-md);
+}
+
+.hero-title {
+  color: #FFFFFF;
+  font-size: var(--font-size-display);
+  font-weight: 800;
+  line-height: 1.15;
+  margin-bottom: var(--space-md);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+}
+
+.hero-subtitle {
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.6;
+  margin-bottom: var(--space-xl);
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-2xl);
+}
+
+.hero-live-counter {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  background: rgba(18, 24, 21, 0.65);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-full);
+  padding: 0.5rem 1.25rem;
+  font-size: var(--font-size-sm);
+  color: #FFFFFF;
+}
+
+.pulsing-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-saffron);
+  box-shadow: 0 0 0 rgba(245, 158, 11, 0.7);
+  animation: pulseGlow 1.8s infinite;
+}
+
+/* --------------------------------------------------------------------------
+   Live Availability Strip (Horizontal Scrolling Carousel)
+   -------------------------------------------------------------------------- */
+.live-strip-section {
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  padding-block: var(--space-xl);
+}
+
+.strip-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-md);
+}
+
+.scroller-track {
+  display: flex;
+  gap: var(--space-md);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: var(--space-sm);
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+
+.scroller-card {
+  flex: 0 0 290px;
+  scroll-snap-align: start;
+}
+
+/* --------------------------------------------------------------------------
+   How It Works (Process with dotted connector line)
+   -------------------------------------------------------------------------- */
+.how-it-works-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-xl);
+  position: relative;
+  margin-top: var(--space-xl);
+}
+
+@media (min-width: 900px) {
+  .how-it-works-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .how-it-works-grid::before {
+    content: '';
+    position: absolute;
+    top: 48px;
+    left: 15%;
+    right: 15%;
+    border-top: 2.5px dashed var(--color-border-focus);
+    z-index: 1;
+    opacity: 0.5;
+  }
+}
+
+.step-card {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-xl);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.step-icon-box {
+  width: 76px;
+  height: 76px;
+  border-radius: var(--radius-full);
+  background: var(--color-primary-surface);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  margin-bottom: var(--space-md);
+  border: 2px solid rgba(31, 92, 74, 0.2);
+  transition: transform var(--transition-fast), background var(--transition-fast);
+}
+
+.step-card:hover .step-icon-box {
+  transform: scale(1.1) rotate(5deg);
+  background: var(--color-saffron-surface);
+  color: var(--color-saffron-dark);
+}
+
+/* --------------------------------------------------------------------------
+   Impact Band (Animated count-up counters)
+   -------------------------------------------------------------------------- */
+.impact-band {
+  background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%);
+  color: #FFFFFF;
+  padding-block: var(--space-3xl);
+  position: relative;
+}
+
+.impact-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-lg);
+  text-align: center;
+}
+
+@media (min-width: 900px) {
+  .impact-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.impact-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.impact-number {
+  font-family: var(--font-heading);
+  font-size: clamp(2.2rem, 4vw, 3.5rem);
+  font-weight: 800;
+  color: var(--color-saffron);
+  line-height: 1;
+  margin-bottom: var(--space-xs);
+}
+
+.impact-label {
+  font-size: var(--font-size-sm);
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 500;
+}
+
+/* --------------------------------------------------------------------------
+   Who Is It For (Role Target Cards)
+   -------------------------------------------------------------------------- */
+.audience-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.audience-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.audience-icon {
+  font-size: 2.2rem;
+  margin-bottom: var(--space-md);
+}
+
+/* --------------------------------------------------------------------------
+   Stories of Hope (Testimonial Carousel)
+   -------------------------------------------------------------------------- */
+.carousel-container {
+  position: relative;
+  max-width: 820px;
+  margin-inline: auto;
+  overflow: hidden;
+}
+
+.testimonial-track {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
+.testimonial-slide {
+  min-width: 100%;
+  padding: var(--space-xl);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+}
+
+.testimonial-quote {
+  font-family: var(--font-heading);
+  font-size: clamp(1.1rem, 2vw, 1.4rem);
+  font-style: italic;
+  color: var(--color-text-main);
+  margin-bottom: var(--space-lg);
+  line-height: 1.5;
+}
+
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+}
+
+.testimonial-avatar {
+  width: 54px;
+  height: 54px;
+  border-radius: var(--radius-full);
+  object-fit: cover;
+  border: 2px solid var(--color-saffron);
+}
+
+.carousel-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+}
+
+.carousel-prev { left: 4px; }
+.carousel-next { right: 4px; }
+
+/* --------------------------------------------------------------------------
+   CTA Banner
+   -------------------------------------------------------------------------- */
+.cta-banner {
+  background: linear-gradient(135deg, var(--color-primary-surface) 0%, var(--color-saffron-surface) 100%);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-2xl) var(--space-xl);
+  text-align: center;
+  margin-block: var(--space-2xl);
+}
+
+.cta-banner h2 {
+  font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+  margin-bottom: var(--space-md);
+}
+
+/* --------------------------------------------------------------------------
+   Footer
+   -------------------------------------------------------------------------- */
+.site-footer {
+  background: #16201B;
+  color: #ECEAE4;
+  padding-block: var(--space-3xl) var(--space-xl);
+  margin-top: auto;
+  border-top: 1px solid #23322B;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-2xl);
+  margin-bottom: var(--space-2xl);
+}
+
+@media (min-width: 640px) {
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .footer-grid {
+    grid-template-columns: 2fr 1fr 1fr 1.5fr;
+  }
+}
+
+.footer-brand p {
+  color: #A3A8A5;
+  font-size: var(--font-size-sm);
+  margin-top: var(--space-sm);
+  max-width: 320px;
+}
+
+.footer-col h4 {
+  color: #FFFFFF;
+  font-size: var(--font-size-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: var(--space-md);
+}
+
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  font-size: var(--font-size-sm);
+}
+
+.footer-links a {
+  color: #A3A8A5;
+}
+
+.footer-links a:hover {
+  color: var(--color-saffron);
+}
+
+.footer-bottom {
+  border-top: 1px solid #23322B;
+  padding-top: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  align-items: center;
+  justify-content: space-between;
+  font-size: var(--font-size-xs);
+  color: #7D8480;
+}
+
+@media (min-width: 640px) {
+  .footer-bottom {
+    flex-direction: row;
+  }
+}

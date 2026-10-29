@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Available Surplus Food Feed - SharePlate</title>
+  <meta name="description" content="Browse fresh, verified surplus food donations ready for rescue by local shelters and NGOs.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Favicon / Brand Icons -->
+  <link rel="icon" type="image/x-icon" href="../assests/shareplate_logo.ico">
+  <link rel="icon" type="image/svg+xml" href="../assests/shareplate_logo.svg">
+  <link rel="apple-touch-icon" href="../assests/shareplate_logo.png">
+
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="dashboard-body">
+
+  <header class="navbar" role="banner">
+    <div class="container nav-container">
+      <a href="../index.html" class="brand-logo" aria-label="SharePlate Home">
+        <img src="../assests/shareplate_logo.svg" alt="SharePlate Logo" class="brand-logo-img" width="36" height="36">
+        <span class="logo-text">Share<span>Plate</span></span>
+      </a>
+
+      <!-- Desktop Receiver Tabs -->
+      <nav class="nav-menu" aria-label="Receiver Navigation">
+        <a href="feed.html" class="nav-link active">Surplus Feed</a>
+        <a href="map.html" class="nav-link">Food Map</a>
+        <a href="claims.html" class="nav-link">My Claims</a>
+        <a href="profile.html" class="nav-link">Shelter Profile</a>
+      </nav>
+
+      <div class="nav-actions">
+        <!-- Notification Bell Dropdown -->
+        <div class="notification-wrapper">
+          <button class="btn-icon notification-bell-btn" aria-label="Notifications">
+            🔔
+            <span class="notification-badge" style="display:none;">0</span>
+          </button>
+          <div class="notification-dropdown">
+            <div class="notification-header">
+              <span>Alerts & Notifications</span>
+            </div>
+            <div class="notification-list"></div>
+          </div>
+        </div>
+
+        <button class="btn-icon theme-toggle-btn" aria-label="Toggle Dark Mode">
+          <span class="theme-icon-moon">🌙</span>
+          <span class="theme-icon-sun" style="display:none;">☀️</span>
+        </button>
+
+        <div id="user-nav-profile"></div>
+
+        <!-- Mobile Hamburger Button -->
+        <button class="hamburger-btn" aria-label="Toggle navigation menu" aria-expanded="false">
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Right-to-Left Slide Drawer -->
+    <div class="mobile-nav-drawer" role="navigation" aria-label="Mobile Navigation">
+      <a href="feed.html" class="nav-link active">🤝 Surplus Food Feed</a>
+      <a href="map.html" class="nav-link">🗺️ Food Rescue Map</a>
+      <a href="claims.html" class="nav-link">📋 My Food Claims</a>
+      <a href="profile.html" class="nav-link">🏢 Shelter Profile</a>
+      <hr style="border:none;border-top:1px solid var(--color-border);margin-block:var(--space-2xs);">
+      <a href="../donor/dashboard.html" class="nav-link">🍲 Donor Portal</a>
+      <a href="../volunteer/tasks.html" class="nav-link">🚴 Volunteer Portal</a>
+      <a href="../admin/dashboard.html" class="nav-link">⚡ Admin Console</a>
+      <a href="../index.html" class="nav-link">🏠 Public Home</a>
+    </div>
+  </header>
+
+  <main class="dashboard-main">
+    <div class="container" style="padding-top:var(--space-lg);">
+      <div class="flex-between" style="margin-bottom:var(--space-md); flex-wrap:wrap; gap:var(--space-sm);">
+        <div>
+          <span class="role-badge role-badge-receiver">Verified NGO Receiver</span>
+          <h1 style="font-size:var(--font-size-2xl); margin-top:2px;">Live Surplus Food Feed</h1>
+          <p style="font-size:var(--font-size-sm); color:var(--color-text-secondary);">
+            Food ready for immediate reservation. Free of cost for verified shelters.
+          </p>
+        </div>
+        <div>
+          <a href="map.html" class="btn btn-outline btn-sm">
+            🗺️ View on Map
+          </a>
+        </div>
+      </div>
+
+      <!-- Search & Filters Toolbar -->
+      <div class="filter-toolbar">
+        <div class="filter-search-box">
+          <span class="filter-search-icon">🔍</span>
+          <input type="text" id="feed-search-input" class="form-control" placeholder="Search dish, banquet hall, or area...">
+        </div>
+
+        <!-- Category Pills -->
+        <div class="filter-pills" id="category-pills">
+          <button class="filter-pill active" data-category="all">All Food (6)</button>
+          <button class="filter-pill" data-category="Cooked Meals">🍲 Cooked Meals</button>
+          <button class="filter-pill" data-category="Bakery & Bread">🥖 Bakery</button>
+          <button class="filter-pill" data-category="Raw Produce">🥗 Fresh Produce</button>
+          <button class="filter-pill" data-category="Packaged Snacks">🥪 Packaged</button>
+          <button class="filter-pill" data-category="Dairy">🥛 Dairy</button>
+        </div>
+
+        <!-- Sort Select -->
+        <div style="min-width:160px; margin-left:auto;">
+          <select id="feed-sort-select" class="form-control" style="padding:0.4rem 0.8rem; font-size:12px;">
+            <option value="nearest">Sort: Nearest first</option>
+            <option value="urgent">Sort: Expiring soonest</option>
+            <option value="newest">Sort: Newly posted</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Food Cards Grid -->
+      <div id="feed-grid" class="grid-cols-3">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+  </main>
+
+  <!-- Claim Confirmation Modal Dialog -->
+  <dialog id="claim-modal" class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">Confirm Food Reservation</h3>
+      <button class="btn-icon" data-close-modal aria-label="Close modal">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:flex; gap:var(--space-md); margin-bottom:var(--space-md);">
+        <img id="claim-modal-img" src="" alt="Food Preview" style="width:90px; height:80px; object-fit:cover; border-radius:var(--radius-md);">
+        <div>
+          <h4 id="claim-modal-title" style="font-size:var(--font-size-base); margin-bottom:2px;">Dish Title</h4>
+          <div id="claim-modal-quantity" style="font-size:var(--font-size-xs); color:var(--color-saffron-dark); font-weight:700;">Quantity</div>
+          <div id="claim-modal-address" style="font-size:var(--font-size-xs); color:var(--color-text-secondary); margin-top:2px;">Address</div>
+        </div>
+      </div>
+
+      <div style="background:var(--color-bg-alt); padding:var(--space-md); border-radius:var(--radius-md); font-size:var(--font-size-xs); color:var(--color-text-secondary); margin-bottom:var(--space-md);">
+        <strong style="color:var(--color-text-main); display:block; margin-bottom:4px;">Delivery Arrangement:</strong>
+        Upon claiming, this rescue will be broadcast to local community volunteers for transport, or your shelter team may elect self-pickup.
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="claim-beneficiary-count">Beneficiary Servings Required</label>
+        <input type="number" id="claim-beneficiary-count" class="form-control" value="45" min="1" max="200">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="claim-special-notes">Special Instructions for Deliverer</label>
+        <input type="text" id="claim-special-notes" class="form-control" placeholder="e.g. Ring bell at Main Gate, our kitchen staff is on standby.">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline btn-sm" data-close-modal>Cancel</button>
+      <button type="button" id="confirm-claim-btn" class="btn btn-primary btn-sm">
+        Confirm & Reserve Food &rarr;
+      </button>
+    </div>
+  </dialog>
+
+  <!-- Mobile Bottom Tab Bar -->
+  <nav class="bottom-tab-bar" aria-label="Mobile Bottom Navigation">
+    <a href="feed.html" class="tab-item active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="8" y1="6" x2="21" y2="6"/>
+        <line x1="8" y1="12" x2="21" y2="12"/>
+        <line x1="8" y1="18" x2="21" y2="18"/>
+        <line x1="3" y1="6" x2="3.01" y2="6"/>
+        <line x1="3" y1="12" x2="3.01" y2="12"/>
+        <line x1="3" y1="18" x2="3.01" y2="18"/>
+      </svg>
+      <span>Feed</span>
+    </a>
+    <a href="map.html" class="tab-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/>
+        <line x1="8" y1="2" x2="8" y2="18"/>
+        <line x1="16" y1="6" x2="16" y2="22"/>
+      </svg>
+      <span>Map</span>
+    </a>
+    <a href="claims.html" class="tab-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+        <polyline points="22 4 12 14.01 9 11.01"/>
+      </svg>
+      <span>Claims</span>
+    </a>
+    <a href="profile.html" class="tab-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+      <span>Profile</span>
+    </a>
+  </nav>
+
+  <script src="../js/data.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/ui.js"></script>
+  <script src="../js/donations.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      SharePlateAuth.requireAuth(['receiver']);
+
+      let activeCategory = 'all';
+      let selectedDonationToClaim = null;
+
+      const renderFeed = () => {
+        const donations = SharePlateData.getDonations();
+        const searchVal = document.getElementById('feed-search-input')?.value.toLowerCase().trim() || '';
+        const sortMode = document.getElementById('feed-sort-select')?.value || 'nearest';
+
+        let filtered = donations.filter(d => {
+          // Category match
+          if (activeCategory !== 'all' && d.category !== activeCategory) return false;
+
+          // Search match
+          if (searchVal) {
+            const str = `${d.title} ${d.donor?.name || ''} ${d.address} ${d.category}`.toLowerCase();
+            if (!str.includes(searchVal)) return false;
+          }
+          return true;
+        });
+
+        // Sort
+        if (sortMode === 'urgent') {
+          filtered.sort((a, b) => new Date(a.safeUntil).getTime() - new Date(b.safeUntil).getTime());
+        } else if (sortMode === 'nearest') {
+          filtered.sort((a, b) => parseFloat(a.distance || 5) - parseFloat(b.distance || 5));
+        }
+
+        const container = document.getElementById('feed-grid');
+        if (!container) return;
+
+        if (filtered.length === 0) {
+          container.innerHTML = `
+            <div style="grid-column: 1/-1; text-align:center; padding:var(--space-2xl); background:var(--color-surface); border-radius:var(--radius-xl); border:1px solid var(--color-border);">
+              <div style="font-size:2.5rem; margin-bottom:8px;">🍲</div>
+              <h3 style="font-size:var(--font-size-lg);">No surplus matching this filter</h3>
+              <p style="font-size:var(--font-size-sm); color:var(--color-text-secondary); margin-top:4px;">
+                Check back shortly! New banquet and restaurant donations are posted throughout the day.
+              </p>
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = filtered.map(item => {
+          return SharePlateDonations.renderDonationCard(item, {
+            showClaimBtn: true,
+            showTrackBtn: item.status !== 'available',
+            trackUrl: '../donor/track.html'
+          });
+        }).join('');
+
+        // Attach Claim modal triggers
+        document.querySelectorAll('.claim-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const id = btn.dataset.donationId;
+            const item = SharePlateData.getDonationById(id);
+            if (item) {
+              selectedDonationToClaim = item;
+              document.getElementById('claim-modal-title').textContent = item.title;
+              document.getElementById('claim-modal-quantity').textContent = item.quantity;
+              document.getElementById('claim-modal-address').textContent = item.address;
+              document.getElementById('claim-modal-img').src = item.photo;
+              SharePlateUI.openModal('claim-modal');
+            }
+          });
+        });
+
+        SharePlateDonations.startCountdownLoop();
+      };
+
+      // Filter pills
+      document.querySelectorAll('#category-pills .filter-pill').forEach(pill => {
+        pill.addEventListener('click', () => {
+          document.querySelectorAll('#category-pills .filter-pill').forEach(p => p.classList.remove('active'));
+          pill.classList.add('active');
+          activeCategory = pill.dataset.category;
+          renderFeed();
+        });
+      });
+
+      // Search & sort events
+      document.getElementById('feed-search-input')?.addEventListener('input', renderFeed);
+      document.getElementById('feed-sort-select')?.addEventListener('change', renderFeed);
+
+      // Confirm claim modal action
+      document.getElementById('confirm-claim-btn')?.addEventListener('click', () => {
+        if (!selectedDonationToClaim) return;
+
+        const user = SharePlateAuth.getCurrentUser();
+        const receiverName = user?.organization || 'Community Hope Shelter';
+        const claimResult = SharePlateData.claimDonation(selectedDonationToClaim.id, receiverName);
+
+        SharePlateUI.closeModal('claim-modal');
+
+        if (claimResult) {
+          SharePlateUI.toast(`Food reserved successfully! OTP Verification Code: ${claimResult.otpCode}`, 'success', 4000);
+          setTimeout(() => {
+            window.location.href = 'claims.html';
+          }, 1200);
+        }
+      });
+
+      renderFeed();
+    });
+  </script>
+</body>
+</html>

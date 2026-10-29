@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Post Surplus Food - SharePlate</title>
+  <meta name="description" content="List surplus food for immediate rescue by shelters and NGOs. Fast, verified, and safe.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Favicon / Brand Icons -->
+  <link rel="icon" type="image/x-icon" href="../assests/shareplate_logo.ico">
+  <link rel="icon" type="image/svg+xml" href="../assests/shareplate_logo.svg">
+  <link rel="apple-touch-icon" href="../assests/shareplate_logo.png">
+
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="dashboard-body">
+
+  <!-- Top Dashboard Bar -->
+  <header class="navbar" role="banner">
+    <div class="container nav-container">
+      <a href="../index.html" class="brand-logo" aria-label="SharePlate Home">
+        <img src="../assests/shareplate_logo.svg" alt="SharePlate Logo" class="brand-logo-img" width="36" height="36">
+        <span class="logo-text">Share<span>Plate</span></span>
+      </a>
+
+      <nav class="nav-menu" aria-label="Donor Navigation">
+        <a href="dashboard.html" class="nav-link">Dashboard</a>
+        <a href="post-food.html" class="nav-link active">Post Food</a>
+        <a href="track.html" class="nav-link">Track Delivery</a>
+        <a href="profile.html" class="nav-link">Donor Profile</a>
+      </nav>
+
+      <div class="nav-actions">
+        <!-- Notification Bell Dropdown -->
+        <div class="notification-wrapper">
+          <button class="btn-icon notification-bell-btn" aria-label="Notifications">
+            🔔
+            <span class="notification-badge" style="display:none;">0</span>
+          </button>
+          <div class="notification-dropdown">
+            <div class="notification-header">
+              <span>Alerts & Notifications</span>
+            </div>
+            <div class="notification-list"></div>
+          </div>
+        </div>
+
+        <button class="btn-icon theme-toggle-btn" aria-label="Toggle Dark Mode">
+          <span class="theme-icon-moon">🌙</span>
+          <span class="theme-icon-sun" style="display:none;">☀️</span>
+        </button>
+
+        <div id="user-nav-profile"></div>
+
+        <!-- Mobile Hamburger Button -->
+        <button class="hamburger-btn" aria-label="Toggle navigation menu" aria-expanded="false">
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Right-to-Left Slide Drawer -->
+    <div class="mobile-nav-drawer" role="navigation" aria-label="Mobile Navigation">
+      <a href="dashboard.html" class="nav-link">📊 Donor Dashboard</a>
+      <a href="post-food.html" class="nav-link active">🍲 Post Surplus Food</a>
+      <a href="track.html" class="nav-link">🚚 Track Deliveries</a>
+      <a href="profile.html" class="nav-link">👤 Kitchen Profile</a>
+      <hr style="border:none;border-top:1px solid var(--color-border);margin-block:var(--space-2xs);">
+      <a href="../receiver/feed.html" class="nav-link">🤝 Receiver Feed</a>
+      <a href="../volunteer/tasks.html" class="nav-link">🚴 Volunteer Portal</a>
+      <a href="../admin/dashboard.html" class="nav-link">⚡ Admin Console</a>
+      <a href="../index.html" class="nav-link">🏠 Public Home</a>
+    </div>
+  </header>
+
+  <main class="dashboard-main">
+    <div class="container" style="max-width:760px; padding-top:var(--space-lg);">
+      <div style="margin-bottom:var(--space-md);">
+        <a href="dashboard.html" class="btn btn-outline btn-sm" style="margin-bottom:var(--space-xs);">&larr; Back to Dashboard</a>
+        <h1 style="font-size:var(--font-size-2xl);">Post Surplus Food</h1>
+        <p style="font-size:var(--font-size-sm); color:var(--color-text-secondary);">
+          Takes under 60 seconds. Local shelters and delivery volunteers will be alerted immediately.
+        </p>
+      </div>
+
+      <div class="form-card fade-in">
+        <form id="post-food-form" novalidate>
+
+          <!-- Wedding Mode Pre-Schedule Switch -->
+          <div class="switch-wrapper">
+            <div>
+              <div class="switch-label-title">💍 Wedding / Large Event Mode</div>
+              <div class="switch-label-desc">Toggle for 50+ bulk portions with pre-arranged late-night volunteer dispatch</div>
+            </div>
+            <label class="toggle-switch" aria-label="Enable Wedding Mode">
+              <input type="checkbox" id="wedding-mode-toggle">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+
+          <!-- Dish Title -->
+          <div class="form-group">
+            <label class="form-label" for="food-title">
+              Dish / Food Description <span class="required">*</span>
+            </label>
+            <input type="text" id="food-title" class="form-control" placeholder="e.g. 60 Servings Shahi Paneer, Pulao & Naan" required>
+            <span id="title-error" class="form-error-msg"></span>
+          </div>
+
+          <!-- Category & Quantity (2 columns) -->
+          <div class="grid-cols-2">
+            <div class="form-group">
+              <label class="form-label" for="food-category">Food Category <span class="required">*</span></label>
+              <select id="food-category" class="form-control">
+                <option value="Cooked Meals">🍲 Cooked Meals (Buffet / Banquet)</option>
+                <option value="Bakery & Bread">🥖 Bakery, Bread & Pastries</option>
+                <option value="Raw Produce">🥗 Fresh Raw Produce / Fruits</option>
+                <option value="Packaged Snacks">🥪 Packaged Sandwiches / Snacks</option>
+                <option value="Dairy">🥛 Dairy & Milk Products</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="food-quantity">
+                Portion Quantity <span class="required">*</span>
+              </label>
+              <input type="text" id="food-quantity" class="form-control" placeholder="e.g. 50 servings (~20 kg)" required>
+              <span id="quantity-error" class="form-error-msg"></span>
+            </div>
+          </div>
+
+          <!-- Photo Upload & Preview -->
+          <div class="form-group">
+            <label class="form-label">Food Photo / Inspection Picture</label>
+            <div class="dropzone-box" onclick="document.getElementById('food-photo-input').click();">
+              <input type="file" id="food-photo-input" accept="image/*" style="display:none;">
+              <div style="font-size:2rem; margin-bottom:4px;">📸</div>
+              <div style="font-weight:600; font-size:var(--font-size-sm); color:var(--color-primary);">Click or tap to snap / upload photo</div>
+              <div style="font-size:var(--font-size-xs); color:var(--color-text-secondary); margin-top:2px;">Helps receivers verify packaging and freshness immediately</div>
+            </div>
+
+            <div id="photo-preview-wrap" class="dropzone-preview-container">
+              <img id="photo-preview-img" src="" alt="Food Preview">
+              <button type="button" id="remove-photo-btn" class="dropzone-remove-btn" title="Remove photo">&times;</button>
+            </div>
+          </div>
+
+          <!-- Safe Until Time Picker + Quick Presets -->
+          <div class="form-group">
+            <label class="form-label" for="safe-until-input">
+              Must Be Consumed By (Safe Until) <span class="required">*</span>
+            </label>
+            <input type="datetime-local" id="safe-until-input" class="form-control" required>
+            <div style="display:flex; gap:6px; margin-top:6px; flex-wrap:wrap;">
+              <span style="font-size:11px; color:var(--color-text-muted); align-self:center;">Quick presets:</span>
+              <button type="button" class="btn btn-outline btn-sm quick-hour-btn" data-hours="2">+2 Hours</button>
+              <button type="button" class="btn btn-outline btn-sm quick-hour-btn btn-green" data-hours="4">+4 Hours</button>
+              <button type="button" class="btn btn-outline btn-sm quick-hour-btn" data-hours="8">+8 Hours</button>
+              <button type="button" class="btn btn-outline btn-sm quick-hour-btn" data-hours="24">+24 Hours</button>
+            </div>
+            <span id="time-error" class="form-error-msg"></span>
+          </div>
+
+          <!-- Pickup Address -->
+          <div class="form-group">
+            <label class="form-label" for="food-address">
+              Pickup Address & Landmark <span class="required">*</span>
+            </label>
+            <input type="text" id="food-address" class="form-control" value="Nishat Banquet & Royal Hall, MM Alam Road, Gulberg III, Lahore" placeholder="Enter kitchen address for volunteer pickup" required>
+            <span id="address-error" class="form-error-msg"></span>
+          </div>
+
+          <!-- Special Packaging Notes -->
+          <div class="form-group">
+            <label class="form-label" for="food-notes">Storage & Allergen Notes (Optional)</label>
+            <textarea id="food-notes" class="form-control" rows="2" placeholder="e.g. Packed in stainless steel hot-packs. Vegetarian, contains dairy."></textarea>
+          </div>
+
+          <!-- Mandatory Food Safety Certification Checkbox -->
+          <div style="background:var(--color-primary-surface); border:1.5px solid var(--color-primary); border-radius:var(--radius-md); padding:var(--space-md); margin-block:var(--space-md);">
+            <label style="display:flex; gap:10px; align-items:flex-start; font-size:var(--font-size-sm); cursor:pointer;">
+              <input type="checkbox" id="safety-cert-check" style="margin-top:4px; width:18px; height:18px; accent-color:var(--color-primary);" required>
+              <span>
+                <strong>Food Safety Certification:</strong> I hereby certify this surplus was prepared in a hygienic kitchen, maintained at safe thermal temperature, packed in clean food-grade vessels, and has not been contaminated by customer plate contact.
+              </span>
+            </label>
+            <span id="safety-error" class="form-error-msg" style="margin-top:6px;"></span>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top:var(--space-sm);">
+            🚀 Publish Surplus Listing to Live Feed
+          </button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <!-- Mobile Fixed Bottom Tab Bar -->
+  <nav class="bottom-tab-bar" aria-label="Mobile Bottom Navigation">
+    <a href="dashboard.html" class="tab-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+      <span>Home</span>
+    </a>
+    <a href="post-food.html" class="tab-item active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="12" y1="8" x2="12" y2="16"/>
+        <line x1="8" y1="12" x2="16" y2="12"/>
+      </svg>
+      <span>Post</span>
+    </a>
+    <a href="track.html" class="tab-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"/>
+        <polyline points="12 6 12 12 16 14"/>
+      </svg>
+      <span>Track</span>
+    </a>
+    <a href="profile.html" class="tab-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+      <span>Profile</span>
+    </a>
+  </nav>
+
+  <script src="../js/data.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/ui.js"></script>
+  <script src="../js/donations.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      SharePlateAuth.requireAuth(['donor']);
+
+      // Check query params for pre-activated wedding mode
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('mode') === 'wedding') {
+        const toggle = document.getElementById('wedding-mode-toggle');
+        if (toggle) toggle.checked = true;
+      }
+
+      // Default safe-until to +4 hours
+      const safeInput = document.getElementById('safe-until-input');
+      if (safeInput && !safeInput.value) {
+        const d = new Date(Date.now() + 4 * 60 * 60 * 1000);
+        safeInput.value = new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+      }
+    });
+  </script>
+</body>
+</html>

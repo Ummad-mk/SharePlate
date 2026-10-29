@@ -1,0 +1,491 @@
+/* ==========================================================================
+   SharePlate Component Styles
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Buttons (Accessible 44px+ touch targets, rounded, hover lift)
+   -------------------------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  min-height: 44px;
+  padding: 0.625rem 1.35rem;
+  font-family: var(--font-body);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  border-radius: var(--radius-full);
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast), color var(--transition-fast);
+  white-space: nowrap;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn-primary {
+  background: var(--color-saffron);
+  color: #1A1814;
+  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.3);
+}
+
+.btn-primary:hover {
+  background: var(--color-saffron-dark);
+  color: #FFFFFF;
+  box-shadow: 0 6px 18px rgba(245, 158, 11, 0.45);
+}
+
+.btn-green {
+  background: var(--color-primary);
+  color: #FFFFFF;
+}
+
+.btn-green:hover {
+  background: var(--color-primary-dark);
+  box-shadow: 0 6px 18px rgba(31, 92, 74, 0.35);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--color-text-main);
+  border: 1.5px solid var(--color-border);
+}
+
+.btn-outline:hover {
+  background: var(--color-surface);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.btn-outline-white {
+  background: transparent;
+  color: #FFFFFF;
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+}
+
+.btn-outline-white:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: #FFFFFF;
+}
+
+.btn-terracotta {
+  background: var(--color-terracotta);
+  color: #FFFFFF;
+}
+
+.btn-terracotta:hover {
+  background: var(--color-terracotta-dark);
+}
+
+.btn-sm {
+  min-height: 36px;
+  padding: 0.35rem 0.85rem;
+  font-size: var(--font-size-xs);
+}
+
+.btn-lg {
+  min-height: 52px;
+  padding: 0.85rem 2rem;
+  font-size: var(--font-size-base);
+}
+
+.btn-block {
+  width: 100%;
+}
+
+.btn-icon {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: var(--radius-full);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-main);
+}
+
+.btn-icon:hover {
+  background: var(--color-surface-hover);
+  border-color: var(--color-primary);
+}
+
+/* --------------------------------------------------------------------------
+   Cards (Warm, Rounded, Elevation)
+   -------------------------------------------------------------------------- */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal), border-color var(--transition-normal);
+  display: flex;
+  flex-direction: column;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: rgba(31, 92, 74, 0.25);
+}
+
+.card-img-wrap {
+  position: relative;
+  width: 100%;
+  height: 190px;
+  overflow: hidden;
+  background: var(--color-bg-alt);
+}
+
+.card-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-normal);
+}
+
+.card:hover .card-img-wrap img {
+  transform: scale(1.04);
+}
+
+.card-body {
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: var(--space-xs);
+}
+
+.card-title {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--font-size-base);
+  color: var(--color-text-main);
+  line-height: 1.35;
+}
+
+.card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-xs) var(--space-sm);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+.card-footer {
+  padding: var(--space-sm) var(--space-md);
+  border-top: 1px solid var(--color-border);
+  background: var(--color-surface-hover);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* --------------------------------------------------------------------------
+   Badges & Chips
+   -------------------------------------------------------------------------- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.2rem 0.65rem;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+}
+
+.badge-urgent {
+  background: var(--color-danger-bg);
+  color: var(--color-danger);
+  border: 1px solid rgba(185, 28, 28, 0.2);
+}
+
+.badge-safe {
+  background: var(--color-success-bg);
+  color: var(--color-success);
+  border: 1px solid rgba(21, 128, 61, 0.2);
+}
+
+.badge-saffron {
+  background: var(--color-saffron-surface);
+  color: var(--color-saffron-dark);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.badge-primary {
+  background: var(--color-primary-surface);
+  color: var(--color-primary);
+  border: 1px solid rgba(31, 92, 74, 0.2);
+}
+
+.badge-overlay {
+  position: absolute;
+  top: var(--space-xs);
+  left: var(--space-xs);
+  z-index: 2;
+  box-shadow: var(--shadow-sm);
+}
+
+/* --------------------------------------------------------------------------
+   Live Countdown Timer Badge
+   -------------------------------------------------------------------------- */
+.countdown-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0.25rem 0.6rem;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  background: rgba(39, 35, 30, 0.85);
+  backdrop-filter: blur(4px);
+  color: #FFFFFF;
+}
+
+.countdown-chip.expiring-soon {
+  background: var(--color-terracotta);
+  animation: pulseGlow 2s infinite;
+}
+
+/* --------------------------------------------------------------------------
+   Status Tracker Stepper (Delivery Lifecycle)
+   -------------------------------------------------------------------------- */
+.stepper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  width: 100%;
+  margin-block: var(--space-lg);
+  padding-inline: var(--space-xs);
+}
+
+.stepper::before {
+  content: '';
+  position: absolute;
+  top: 18px;
+  left: 20px;
+  right: 20px;
+  height: 3px;
+  background: var(--color-border);
+  z-index: 1;
+}
+
+.stepper-progress {
+  position: absolute;
+  top: 18px;
+  left: 20px;
+  height: 3px;
+  background: var(--color-primary);
+  z-index: 2;
+  transition: width var(--transition-normal);
+}
+
+.step-item {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 72px;
+}
+
+.step-circle {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-full);
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  transition: all var(--transition-fast);
+}
+
+.step-label {
+  margin-top: var(--space-2xs);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.step-item.active .step-circle {
+  border-color: var(--color-saffron);
+  background: var(--color-saffron);
+  color: #1A1814;
+  box-shadow: 0 0 0 4px var(--color-saffron-surface);
+}
+
+.step-item.active .step-label {
+  color: var(--color-text-main);
+  font-weight: 700;
+}
+
+.step-item.completed .step-circle {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+  color: #FFFFFF;
+}
+
+.step-item.completed .step-label {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   Native <dialog> Modals
+   -------------------------------------------------------------------------- */
+dialog.modal {
+  border: none;
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
+  color: var(--color-text-main);
+  box-shadow: var(--shadow-lg);
+  padding: 0;
+  max-width: 540px;
+  width: 90vw;
+  margin: auto;
+  opacity: 0;
+  transform: translateY(20px) scale(0.96);
+  transition: opacity 0.25s ease-out, transform 0.25s ease-out, display 0.25s allow-discrete, overlay 0.25s allow-discrete;
+}
+
+dialog.modal[open] {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+dialog.modal::backdrop {
+  background: rgba(18, 24, 21, 0.55);
+  backdrop-filter: blur(5px);
+  transition: opacity 0.25s ease-out;
+}
+
+.modal-header {
+  padding: var(--space-lg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.modal-title {
+  font-size: var(--font-size-lg);
+  margin: 0;
+}
+
+.modal-body {
+  padding: var(--space-lg);
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.modal-footer {
+  padding: var(--space-md) var(--space-lg);
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-sm);
+  background: var(--color-bg-alt);
+}
+
+/* --------------------------------------------------------------------------
+   Toast Notifications Stack
+   -------------------------------------------------------------------------- */
+.toast-container {
+  position: fixed;
+  bottom: calc(var(--bottom-nav-height) + 16px);
+  right: var(--space-md);
+  z-index: var(--z-toast);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  pointer-events: none;
+  max-width: 380px;
+  width: calc(100% - 32px);
+}
+
+@media (min-width: 768px) {
+  .toast-container {
+    bottom: var(--space-xl);
+    right: var(--space-xl);
+  }
+}
+
+.toast {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-left: 4px solid var(--color-primary);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm) var(--space-md);
+  box-shadow: var(--shadow-md);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-main);
+  animation: fadeIn 0.3s ease-out;
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.toast.toast-success { border-left-color: var(--color-success); }
+.toast.toast-warning { border-left-color: var(--color-saffron); }
+.toast.toast-danger { border-left-color: var(--color-danger); }
+
+/* --------------------------------------------------------------------------
+   Star Ratings
+   -------------------------------------------------------------------------- */
+.star-rating {
+  display: inline-flex;
+  gap: 4px;
+  font-size: 1.5rem;
+  color: var(--color-border);
+  cursor: pointer;
+}
+
+.star-rating .star {
+  transition: color var(--transition-fast), transform var(--transition-fast);
+}
+
+.star-rating .star.filled,
+.star-rating .star:hover,
+.star-rating .star:hover ~ .star {
+  color: var(--color-saffron);
+}
+
+/* --------------------------------------------------------------------------
+   Skeleton Loaders
+   -------------------------------------------------------------------------- */
+.skeleton {
+  background: linear-gradient(90deg, var(--color-border) 25%, var(--color-bg-alt) 50%, var(--color-border) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-sm);
+}
+
+.skeleton-text {
+  height: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.skeleton-img {
+  height: 180px;
+  width: 100%;
+}

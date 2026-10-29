@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Volunteer Hero Portal - SharePlate</title>
+  <meta name="description" content="Volunteer food rescue mission dispatch, route tracker, and delivery verification console.">
+
+  <!-- Favicon / Brand Icons -->
+  <link rel="icon" type="image/x-icon" href="../assests/shareplate_logo.ico">
+  <link rel="icon" type="image/svg+xml" href="../assests/shareplate_logo.svg">
+  <link rel="apple-touch-icon" href="../assests/shareplate_logo.png">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Leaflet Map CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .volunteer-mission-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-lg);
+      margin-bottom: var(--space-md);
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+      position: relative;
+      overflow: hidden;
+    }
+    .volunteer-mission-card:hover {
+      box-shadow: var(--shadow-md);
+      border-color: var(--color-primary);
+    }
+    .mission-badge-urgent {
+      background: #FEE2E2;
+      color: #991B1B;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .route-step {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-sm);
+      position: relative;
+      padding-bottom: var(--space-md);
+    }
+    .route-step:not(:last-child)::before {
+      content: '';
+      position: absolute;
+      left: 11px;
+      top: 24px;
+      bottom: 0;
+      width: 2px;
+      background: var(--color-border);
+    }
+    .route-dot {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      flex-shrink: 0;
+      z-index: 2;
+    }
+    .route-dot-pickup {
+      background: var(--color-saffron-surface);
+      color: var(--color-saffron-dark);
+      border: 2px solid var(--color-saffron);
+    }
+    .route-dot-dropoff {
+      background: var(--color-primary-surface);
+      color: var(--color-primary);
+      border: 2px solid var(--color-primary);
+    }
+  </style>
+</head>
+<body class="dashboard-body">
+
+  <!-- Top Dashboard Bar -->
+  <header class="navbar" role="banner">
+    <div class="container nav-container">
+      <a href="../index.html" class="brand-logo" aria-label="SharePlate Home">
+        <img src="../assests/shareplate_logo.svg" alt="SharePlate Logo" class="brand-logo-img" width="36" height="36">
+        <span class="logo-text">Share<span>Plate</span></span>
+      </a>
+
+      <!-- Desktop Nav Tabs -->
+      <nav class="nav-menu" aria-label="Volunteer Navigation">
+        <a href="tasks.html" class="nav-link active">Rescue Missions</a>
+        <a href="#active-route" class="nav-link">Live Tracker</a>
+        <a href="../how-it-works.html" class="nav-link">Safety Guidelines</a>
+      </nav>
+
+      <div class="nav-actions">
+        <!-- Notification Bell Dropdown -->
+        <div class="notification-wrapper">
+          <button class="btn-icon notification-bell-btn" aria-label="Notifications">
+            🔔
+            <span class="notification-badge" style="display:none;">0</span>
+          </button>
+          <div class="notification-dropdown">
+            <div class="notification-header">
+              <span>Volunteer Dispatches</span>
+              <span style="font-size:11px;color:var(--color-primary);font-weight:600;">Live Feed</span>
+            </div>
+            <div class="notification-list"></div>
+          </div>
+        </div>
+
+        <!-- Theme Toggle -->
+        <button class="btn-icon theme-toggle-btn" aria-label="Toggle Dark Mode">
+          <span class="theme-icon-moon">🌙</span>
+          <span class="theme-icon-sun" style="display:none;">☀️</span>
+        </button>
+
+        <!-- User Profile Area -->
+        <div id="user-nav-profile"></div>
+
+        <!-- Mobile Hamburger Button -->
+        <button class="hamburger-btn" aria-label="Toggle navigation menu" aria-expanded="false">
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Right-to-Left Slide Drawer -->
+    <div class="mobile-nav-drawer" role="navigation" aria-label="Mobile Navigation">
+      <a href="tasks.html" class="nav-link active">🚴 Rescue Missions</a>
+      <a href="#active-route" class="nav-link">📍 Active Route</a>
+      <a href="../donor/dashboard.html" class="nav-link">🍲 Donor Portal</a>
+      <a href="../receiver/feed.html" class="nav-link">🤝 Receiver Feed</a>
+      <a href="../admin/dashboard.html" class="nav-link">⚡ Admin Console</a>
+      <hr style="border:none;border-top:1px solid var(--color-border);margin-block:var(--space-2xs);">
+      <a href="../index.html" class="nav-link">🏠 Public Home</a>
+    </div>
+  </header>
+
+  <main class="dashboard-main">
+    <div class="container" style="padding-top:var(--space-lg);">
+      <!-- Greeting & Online Status -->
+      <div class="dashboard-header-flex" style="margin-bottom:var(--space-lg);">
+        <div class="dashboard-title-group">
+          <div style="display:flex; align-items:center; gap:var(--space-xs); margin-bottom:4px;">
+            <span class="role-badge role-badge-volunteer">Volunteer Hero</span>
+            <span style="font-size:12px; color:var(--color-success); font-weight:600;">● Online &amp; GPS Active</span>
+          </div>
+          <h1 id="volunteer-greeting" style="font-size:var(--font-size-2xl);">Welcome, Hamza Malik</h1>
+          <p style="font-size:var(--font-size-sm); color:var(--color-text-secondary);">
+            Swift Wheels Lahore Volunteer • 42 hunger relief missions completed this month.
+          </p>
+        </div>
+        <div style="display:flex; gap:var(--space-xs); flex-wrap:wrap;">
+          <button id="toggle-online-btn" class="btn btn-outline btn-sm" style="border-color:var(--color-primary); color:var(--color-primary);">
+            🟢 Active for Dispatches
+          </button>
+          <a href="#active-route" class="btn btn-primary btn-sm">
+            📍 Jump to Route Map
+          </a>
+        </div>
+      </div>
+
+      <!-- Volunteer KPI Grid -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-icon-wrap kpi-icon-green">🚴</div>
+          <div>
+            <div class="kpi-value" id="kpi-active-tasks">1 Active</div>
+            <div class="kpi-label">Current Assigned Mission</div>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-icon-wrap kpi-icon-saffron">🍲</div>
+          <div>
+            <div class="kpi-value">1,280</div>
+            <div class="kpi-label">Meals Safely Delivered</div>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-icon-wrap kpi-icon-blue">⚡</div>
+          <div>
+            <div class="kpi-value">22 min</div>
+            <div class="kpi-label">Avg. Rescue Transit Time</div>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-icon-wrap kpi-icon-terracotta">🏆</div>
+          <div>
+            <div class="kpi-value">Level 4</div>
+            <div class="kpi-label">Verified Rescue Hero Badge</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Layout: Active Mission Route Tracker & Open Dispatches -->
+      <div class="grid-cols-2" style="gap:var(--space-xl); margin-bottom:var(--space-2xl);">
+        
+        <!-- Left Column: Active Mission & OTP Verification -->
+        <div>
+          <div class="flex-between" style="margin-bottom:var(--space-sm);">
+            <h2 style="font-size:var(--font-size-lg);">📍 Active Rescue Mission</h2>
+            <span class="section-tag" style="background:#DCFCE7;color:#15803D;">In Transit</span>
+          </div>
+
+          <div id="active-mission-container">
+            <!-- Dynamic Active Mission Card -->
+            <div class="card" style="border:2px solid var(--color-primary); padding:var(--space-lg); margin-bottom:var(--space-lg);">
+              <div class="flex-between" style="margin-bottom:var(--space-sm);">
+                <strong style="font-size:15px; color:var(--color-primary);" id="active-task-title">65 Boxed Club Sandwiches &amp; Fresh Juices</strong>
+                <span class="badge" style="background:var(--color-saffron-surface); color:var(--color-saffron-dark); font-weight:700;">Task #TSK-301</span>
+              </div>
+
+              <!-- Route Steps -->
+              <div style="margin-block:var(--space-md);">
+                <div class="route-step">
+                  <div class="route-dot route-dot-pickup">1</div>
+                  <div>
+                    <div style="font-size:11px; text-transform:uppercase; font-weight:700; color:var(--color-text-muted);">Pickup From Donor</div>
+                    <strong style="font-size:13px; color:var(--color-text-main);" id="active-pickup-addr">Arfa Tower Tech Cafeteria, Ferozepur Road, Lahore</strong>
+                    <div style="font-size:11px; color:var(--color-text-secondary);">Donor contact: +92 42 3591 0022 (Kitchen Desk)</div>
+                  </div>
+                </div>
+
+                <div class="route-step" style="padding-bottom:0;">
+                  <div class="route-dot route-dot-dropoff">2</div>
+                  <div>
+                    <div style="font-size:11px; text-transform:uppercase; font-weight:700; color:var(--color-text-muted);">Dropoff to Verified Shelter</div>
+                    <strong style="font-size:13px; color:var(--color-text-main);" id="active-dropoff-addr">Edhi Foundation Shelter Home, Allama Iqbal Town, Lahore</strong>
+                    <div style="font-size:11px; color:var(--color-text-secondary);">Shelter Lead: Fatima Begum (+92 42 3780 1122)</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Status Action Buttons -->
+              <div style="background:var(--color-bg-alt); padding:var(--space-md); border-radius:var(--radius-md); margin-bottom:var(--space-md);">
+                <div style="font-size:12px; font-weight:700; margin-bottom:var(--space-xs);">Mission Progress</div>
+                <div class="flex-between" style="gap:var(--space-xs);">
+                  <button id="btn-mark-picked-up" class="btn btn-outline btn-sm" style="flex:1;">
+                    📦 Mark Picked Up
+                  </button>
+                  <button id="btn-open-otp-modal" class="btn btn-primary btn-sm" style="flex:1;">
+                    ✅ Deliver &amp; Verify OTP
+                  </button>
+                </div>
+              </div>
+
+              <!-- Route Map Container -->
+              <div id="active-route" style="height:240px; border-radius:var(--radius-md); overflow:hidden; border:1px solid var(--color-border);"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Available Rescue Dispatches in Local Radius -->
+        <div>
+          <div class="flex-between" style="margin-bottom:var(--space-sm);">
+            <h2 style="font-size:var(--font-size-lg);">🚨 Available Rescue Dispatches</h2>
+            <span style="font-size:12px; color:var(--color-text-muted);" id="dispatch-count-label">Within 5 km radius</span>
+          </div>
+
+          <div id="available-dispatches-list">
+            <!-- Injected via script from SharePlateData -->
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Delivery Verification Modal Dialog -->
+  <dialog id="delivery-otp-dialog" class="modal" style="max-width:440px; padding:var(--space-xl); border-radius:var(--radius-lg); border:1px solid var(--color-border); background:var(--color-surface);">
+    <div style="text-align:center; margin-bottom:var(--space-md);">
+      <span style="font-size:36px; display:block; margin-bottom:var(--space-xs);">🤝</span>
+      <h3 style="font-size:var(--font-size-xl); margin-bottom:4px;">Verify Dropoff OTP</h3>
+      <p style="font-size:var(--font-size-xs); color:var(--color-text-secondary);">
+        Ask the shelter supervisor for their 4-digit verification code to confirm food handover and record the meals.
+      </p>
+    </div>
+
+    <form id="verify-otp-form" onsubmit="return false;">
+      <div style="margin-bottom:var(--space-md);">
+        <label for="shelter-otp-input" style="display:block; font-size:12px; font-weight:600; margin-bottom:6px;">4-Digit Handover Code</label>
+        <input type="text" id="shelter-otp-input" maxlength="4" placeholder="e.g. 4928" style="width:100%; text-align:center; font-size:24px; letter-spacing:0.3em; font-weight:800; padding:10px; border:2px solid var(--color-primary); border-radius:var(--radius-md); background:var(--color-bg);" required>
+        <span style="font-size:11px; color:var(--color-text-muted); display:block; margin-top:4px; text-align:center;">Demo code for testing: <strong>4928</strong></span>
+      </div>
+
+      <div style="display:flex; gap:var(--space-sm);">
+        <button type="button" class="btn btn-outline btn-block" onclick="document.getElementById('delivery-otp-dialog').close()">Cancel</button>
+        <button type="submit" id="btn-submit-delivery-otp" class="btn btn-primary btn-block">Confirm Handover</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Mobile Fixed Bottom Tab Bar -->
+  <nav class="bottom-tab-bar" aria-label="Mobile Bottom Navigation">
+    <a href="tasks.html" class="tab-item active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/>
+        <line x1="16" y1="13" x2="8" y2="13"/>
+        <line x1="16" y1="17" x2="8" y2="17"/>
+      </svg>
+      <span>Tasks</span>
+    </a>
+    <a href="#active-route" class="tab-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/>
+        <line x1="8" y1="2" x2="8" y2="18"/>
+        <line x1="16" y1="6" x2="16" y2="22"/>
+      </svg>
+      <span>Route</span>
+    </a>
+    <a href="../receiver/feed.html" class="tab-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
+        <path d="M2 12h20"/>
+      </svg>
+      <span>Feed</span>
+    </a>
+  </nav>
+
+  <!-- Leaflet Map JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="../js/data.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/ui.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Ensure authenticated volunteer
+      if (!SharePlateAuth.getCurrentUser()) {
+        SharePlateAuth.loginAs('volunteer');
+      }
+
+      // Initialize UI
+      SharePlateUI.init();
+
+      // Render Dispatches
+      renderVolunteerDispatches();
+      initRouteMap();
+
+      // Setup OTP Handover modal
+      const otpDialog = document.getElementById('delivery-otp-dialog');
+      document.getElementById('btn-open-otp-modal')?.addEventListener('click', () => {
+        otpDialog.showModal();
+      });
+
+      document.getElementById('btn-mark-picked-up')?.addEventListener('click', () => {
+        SharePlateUI.toast('Food marked as Picked Up! Delivery in progress.', 'success', 3000);
+        document.getElementById('btn-mark-picked-up').textContent = '✅ Picked Up (In Transit)';
+        document.getElementById('btn-mark-picked-up').disabled = true;
+      });
+
+      document.getElementById('verify-otp-form')?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const code = document.getElementById('shelter-otp-input').value.trim();
+        if (code === '4928' || code.length === 4) {
+          otpDialog.close();
+          SharePlateUI.toast('Mission Success! 60 meals delivered to Robin Hood Shelter.', 'success', 4000);
+          document.getElementById('kpi-active-tasks').textContent = '0 Active';
+          const container = document.getElementById('active-mission-container');
+          container.innerHTML = `
+            <div class="card" style="text-align:center; padding:var(--space-2xl); border-style:dashed;">
+              <span style="font-size:42px;">🎉</span>
+              <h3 style="margin-top:var(--space-xs);">Mission Completed!</h3>
+              <p style="font-size:var(--font-size-sm); color:var(--color-text-secondary); margin-bottom:var(--space-md);">
+                All assigned meals have been handed over. Choose a new dispatch from the list to start another rescue mission.
+              </p>
+              <button class="btn btn-primary btn-sm" onclick="location.reload()">Refresh Dispatches</button>
+            </div>
+          `;
+        } else {
+          SharePlateUI.toast('Invalid code. Please check with shelter supervisor (Demo: 4928)', 'danger', 3000);
+        }
+      });
+    });
+
+    function renderVolunteerDispatches() {
+      const container = document.getElementById('available-dispatches-list');
+      if (!container) return;
+
+      const tasks = SharePlateData.getTasks();
+      const openTasks = tasks.filter(t => t.status === 'available' || t.status === 'Claimed');
+
+      // Sample mock dispatches if empty
+      const displayTasks = openTasks.length > 0 ? openTasks : [
+        {
+          taskId: 'TSK-402',
+          title: '40 Fresh Sourdough Loaves & Pastries',
+          pickup: 'Jalal Sons Bakery, Main Market Gulberg',
+          dropoff: 'SOS Children\'s Village, Ferozepur Road',
+          distance: '2.4 km route',
+          status: 'available',
+          safeUntil: 'Safe for 3h'
+        },
+        {
+          taskId: 'TSK-403',
+          title: '50 Plates Chicken Dum Biryani & Raita',
+          pickup: 'Nishat Banquet, MM Alam Road, Gulberg III',
+          dropoff: 'Saylani Welfare Trust, Ferozepur Road',
+          distance: '3.1 km route',
+          status: 'available',
+          safeUntil: 'Safe for 2h'
+        }
+      ];
+
+      container.innerHTML = displayTasks.map(t => `
+        <div class="volunteer-mission-card">
+          <div class="flex-between" style="margin-bottom:var(--space-xs);">
+            <strong style="font-size:14px;">${t.title}</strong>
+            <span class="mission-badge-urgent">⏰ Safe for 2-3h</span>
+          </div>
+
+          <div style="font-size:12px; color:var(--color-text-secondary); margin-bottom:var(--space-sm);">
+            <div>📍 <strong>From:</strong> ${t.pickup}</div>
+            <div>🎯 <strong>To:</strong> ${t.dropoff}</div>
+            <div style="margin-top:4px; font-weight:600; color:var(--color-primary);">🚗 ${t.distance || '3.2 km'}</div>
+          </div>
+
+          <div class="flex-between">
+            <span style="font-size:11px; color:var(--color-text-muted);">Verified PFA Donor</span>
+            <button class="btn btn-primary btn-sm" onclick="acceptMission('${t.taskId}')">
+              Accept Rescue &rarr;
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    window.acceptMission = function(taskId) {
+      SharePlateData.acceptTask(taskId, 'Hamza Malik');
+      SharePlateUI.toast('Mission Accepted! Opening navigation route...', 'success', 3000);
+      setTimeout(() => location.reload(), 1000);
+    };
+
+    function initRouteMap() {
+      const mapEl = document.getElementById('active-route');
+      if (!mapEl || !window.L) return;
+
+      const map = L.map('active-route', {
+        center: [31.4900, 74.3200],
+        zoom: 13,
+        zoomControl: false
+      });
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap'
+      }).addTo(map);
+
+      // Pickup Marker (Arfa Tower)
+      const pickupIcon = L.divIcon({
+        className: 'custom-map-marker',
+        html: `<div style="background:#f59e0b;color:#16201B;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,0.3);border:2px solid #fff;">1</div>`,
+        iconSize: [28, 28]
+      });
+      L.marker([31.4755, 74.3420], { icon: pickupIcon }).addTo(map).bindPopup('<b>Pickup</b><br>Arfa Tower Tech Cafeteria');
+
+      // Dropoff Marker (Edhi Home)
+      const dropoffIcon = L.divIcon({
+        className: 'custom-map-marker',
+        html: `<div style="background:#1f5c4a;color:#fff;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,0.3);border:2px solid #fff;">2</div>`,
+        iconSize: [28, 28]
+      });
+      L.marker([31.5050, 74.2980], { icon: dropoffIcon }).addTo(map).bindPopup('<b>Dropoff</b><br>Edhi Foundation Shelter Home');
+
+      // Route line
+      const routeLine = L.polyline([
+        [31.4755, 74.3420],
+        [31.4880, 74.3250],
+        [31.4980, 74.3120],
+        [31.5050, 74.2980]
+      ], {
+        color: '#1f5c4a',
+        weight: 4,
+        dashArray: '6, 8',
+        opacity: 0.85
+      }).addTo(map);
+
+      map.fitBounds(routeLine.getBounds(), { padding: [20, 20] });
+    }
+  </script>
+</body>
+</html>

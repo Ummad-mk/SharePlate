@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login & Role Selection - SharePlate</title>
+  <meta name="description" content="Sign in or select a demo role to experience SharePlate as a Donor, Receiver, Volunteer, or Admin.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Favicon / Brand Icons -->
+  <link rel="icon" type="image/x-icon" href="assests/shareplate_logo.ico">
+  <link rel="icon" type="image/svg+xml" href="assests/shareplate_logo.svg">
+  <link rel="apple-touch-icon" href="assests/shareplate_logo.png">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body style="min-height:100vh; display:flex; flex-direction:column; background:var(--color-bg);">
+
+  <!-- Minimal Nav -->
+  <header class="navbar" role="banner">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo" aria-label="SharePlate Home">
+        <img src="assests/shareplate_logo.svg" alt="SharePlate Logo" class="brand-logo-img" width="36" height="36">
+        <span class="logo-text">Share<span>Plate</span></span>
+      </a>
+
+      <div class="nav-actions">
+        <button class="btn-icon theme-toggle-btn" aria-label="Toggle Dark Mode">
+          <span class="theme-icon-moon">🌙</span>
+          <span class="theme-icon-sun" style="display:none;">☀️</span>
+        </button>
+        <a href="index.html" class="btn btn-outline btn-sm">&larr; Back to Home</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-center" style="flex:1; padding-block:var(--space-2xl);">
+    <div class="container" style="max-width:540px;">
+      <div class="form-card fade-in">
+        <div style="text-align:center; margin-bottom:var(--space-lg);">
+          <img src="assests/shareplate_logo.svg" alt="SharePlate Logo" class="brand-logo-img" style="width:68px; height:68px; margin:0 auto var(--space-sm); box-shadow:0 6px 18px rgba(31,92,74,0.22);">
+          <span class="section-tag">Role-Based Access</span>
+          <h1 style="font-size:var(--font-size-2xl); margin-top:var(--space-xs); margin-bottom:var(--space-2xs);">Welcome to SharePlate</h1>
+          <p style="font-size:var(--font-size-sm); color:var(--color-text-secondary);">
+            Choose your community role below to explore the customized workflow.
+          </p>
+        </div>
+
+        <!-- One-Click Instant Demo Login Strip -->
+        <div style="margin-bottom:var(--space-xl); background:var(--color-bg-alt); padding:var(--space-md); border-radius:var(--radius-lg); border:1px solid var(--color-border);">
+          <div style="font-size:var(--font-size-xs); font-weight:700; text-transform:uppercase; color:var(--color-text-muted); margin-bottom:var(--space-sm); text-align:center;">
+            ⚡ Instant 1-Click Role Exploration
+          </div>
+          <div class="grid-cols-2" style="gap:var(--space-xs);">
+            <button class="btn btn-outline quick-login-btn" data-role="donor" style="border-color:rgba(245,158,11,0.5); justify-content:flex-start; text-align:left;">
+              <span style="font-size:18px;">🍲</span>
+              <div>
+                <strong style="display:block; font-size:13px;">Donor Portal</strong>
+                <span style="font-size:10px; color:var(--color-text-muted);">Post & track meals</span>
+              </div>
+            </button>
+
+            <button class="btn btn-outline quick-login-btn" data-role="receiver" style="border-color:rgba(3,105,161,0.5); justify-content:flex-start; text-align:left;">
+              <span style="font-size:18px;">🤝</span>
+              <div>
+                <strong style="display:block; font-size:13px;">Receiver Portal</strong>
+                <span style="font-size:10px; color:var(--color-text-muted);">Browse feed & claims</span>
+              </div>
+            </button>
+
+            <button class="btn btn-outline quick-login-btn" data-role="volunteer" style="border-color:rgba(21,128,61,0.5); justify-content:flex-start; text-align:left;">
+              <span style="font-size:18px;">🚴</span>
+              <div>
+                <strong style="display:block; font-size:13px;">Volunteer Hero</strong>
+                <span style="font-size:10px; color:var(--color-text-muted);">Rescue tasks & route</span>
+              </div>
+            </button>
+
+            <button class="btn btn-outline quick-login-btn" data-role="admin" style="border-color:rgba(126,34,206,0.5); justify-content:flex-start; text-align:left;">
+              <span style="font-size:18px;">📊</span>
+              <div>
+                <strong style="display:block; font-size:13px;">Admin Console</strong>
+                <span style="font-size:10px; color:var(--color-text-muted);">Platform moderation</span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <div class="flex-center" style="margin-bottom:var(--space-md); position:relative;">
+          <hr style="width:100%; border:none; border-top:1px solid var(--color-border);">
+          <span style="position:absolute; background:var(--color-surface); padding-inline:var(--space-sm); font-size:var(--font-size-xs); color:var(--color-text-muted);">
+            or sign in with custom details
+          </span>
+        </div>
+
+        <!-- Custom Login Simulation Form -->
+        <form id="custom-login-form">
+          <div class="form-group">
+            <label class="form-label" for="login-role">Select Role <span class="required">*</span></label>
+            <select id="login-role" class="form-control" required>
+              <option value="donor">Donor (Restaurant, Wedding Hall, Household)</option>
+              <option value="receiver">Receiver (NGO, Orphanage, Shelter)</option>
+              <option value="volunteer">Volunteer (Food Rescue Transporter)</option>
+              <option value="admin">Platform Admin & Safety Moderator</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="login-email">Email or Phone</label>
+            <input type="text" id="login-email" class="form-control" placeholder="e.g. usman@nishatbanquets.pk" value="usman@nishatbanquets.pk">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="login-pass">Password</label>
+            <input type="password" id="login-pass" class="form-control" placeholder="Enter any mock password" value="••••••••">
+            <span style="font-size:11px; color:var(--color-text-muted); margin-top:2px;">
+              * Front-end demo simulation: any credentials will succeed.
+            </span>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top:var(--space-md);">
+            Continue to Dashboard &rarr;
+          </button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/data.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/ui.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Check query param for preselected role (e.g., login.html?role=volunteer)
+      const params = new URLSearchParams(window.location.search);
+      const preRole = params.get('role');
+      if (preRole && ['donor', 'receiver', 'volunteer', 'admin'].includes(preRole)) {
+        document.getElementById('login-role').value = preRole;
+      }
+
+      // Quick 1-click buttons
+      document.querySelectorAll('.quick-login-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const role = btn.dataset.role;
+          SharePlateAuth.loginAs(role);
+        });
+      });
+
+      // Custom form submission
+      const form = document.getElementById('custom-login-form');
+      if (form) {
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const role = document.getElementById('login-role').value;
+          const email = document.getElementById('login-email').value;
+          SharePlateAuth.loginAs(role, { email });
+        });
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,137 @@
+/* ==========================================================================
+   SharePlate Design Tokens & CSS Custom Properties
+   Theme: Warm, Hopeful, Generous Food Sharing Platform
+   ========================================================================== */
+
+:root {
+  /* Brand Color Palette */
+  --color-bg: #FFF8EE;             /* Cream warm background */
+  --color-bg-alt: #FAF2E4;         /* Subtle secondary cream */
+  --color-surface: #FFFFFF;        /* Card & container background */
+  --color-surface-hover: #FCF6EC;  /* Hover state for cards/items */
+  --color-border: #E8DCC8;         /* Soft warm border */
+  --color-border-focus: #1F5C4A;   /* Forest green highlight border */
+
+  /* Primary: Forest Green (Hope, Safety, Freshness) */
+  --color-primary: #1F5C4A;
+  --color-primary-dark: #143F33;
+  --color-primary-light: #2D7A63;
+  --color-primary-surface: #E8F4F0;
+
+  /* Accent: Saffron Gold (Call to Actions, Warmth, Sun) */
+  --color-saffron: #F59E0B;
+  --color-saffron-dark: #D97706;
+  --color-saffron-light: #FDE68A;
+  --color-saffron-surface: #FEF3C7;
+
+  /* Terracotta Accent (Urgency, Earthy, Energy) */
+  --color-terracotta: #D95D39;
+  --color-terracotta-dark: #B94624;
+  --color-terracotta-surface: #FDEDE8;
+
+  /* Functional Status Colors */
+  --color-success: #15803D;
+  --color-success-bg: #DCFCE7;
+  --color-warning: #B45309;
+  --color-warning-bg: #FEF3C7;
+  --color-danger: #B91C1C;
+  --color-danger-bg: #FEE2E2;
+  --color-info: #0369A1;
+  --color-info-bg: #E0F2FE;
+
+  /* Text & Neutrals */
+  --color-text-main: #27231E;       /* Deep warm charcoal */
+  --color-text-secondary: #5C5549;  /* Muted warm grey */
+  --color-text-muted: #8C8476;      /* Subtle label text */
+  --color-text-inverse: #FFFFFF;    /* White on dark backgrounds */
+
+  /* Typography */
+  --font-heading: 'Fraunces', 'Playfair Display', Georgia, serif;
+  --font-body: 'Poppins', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  
+  --font-size-xs: 0.75rem;    /* 12px */
+  --font-size-sm: 0.875rem;   /* 14px */
+  --font-size-base: 1rem;     /* 16px */
+  --font-size-md: 1.125rem;   /* 18px */
+  --font-size-lg: 1.25rem;    /* 20px */
+  --font-size-xl: 1.5rem;     /* 24px */
+  --font-size-2xl: 1.875rem;  /* 30px */
+  --font-size-3xl: 2.25rem;   /* 36px */
+  --font-size-4xl: 3rem;      /* 48px */
+  --font-size-display: clamp(2.25rem, 5vw, 3.75rem);
+
+  /* Spacing Scale */
+  --space-2xs: 0.25rem; /* 4px */
+  --space-xs: 0.5rem;   /* 8px */
+  --space-sm: 0.75rem;  /* 12px */
+  --space-md: 1rem;     /* 16px */
+  --space-lg: 1.5rem;   /* 24px */
+  --space-xl: 2rem;     /* 32px */
+  --space-2xl: 3rem;    /* 48px */
+  --space-3xl: 4.5rem;  /* 72px */
+
+  /* Border Radii */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-full: 9999px;
+
+  /* Elevation & Shadows */
+  --shadow-xs: 0 1px 3px rgba(39, 35, 30, 0.05);
+  --shadow-sm: 0 4px 10px rgba(39, 35, 30, 0.06);
+  --shadow-md: 0 10px 24px rgba(39, 35, 30, 0.08);
+  --shadow-lg: 0 20px 38px rgba(39, 35, 30, 0.12);
+  --shadow-glow: 0 0 25px rgba(245, 158, 11, 0.35);
+
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-bounce: 350ms cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Layout dimensions */
+  --container-max-width: 1240px;
+  --navbar-height: 72px;
+  --bottom-nav-height: 64px;
+  --sidebar-width: 260px;
+  --z-dropdown: 50;
+  --z-sticky: 100;
+  --z-modal: 500;
+  --z-toast: 1000;
+}
+
+/* ==========================================================================
+   Dark Mode Custom Properties (Optional toggle)
+   ========================================================================== */
+[data-theme="dark"] {
+  --color-bg: #121815;             /* Dark forest nocturnal tone */
+  --color-bg-alt: #18221E;
+  --color-surface: #1E2B25;
+  --color-surface-hover: #263830;
+  --color-border: #2D4037;
+  --color-border-focus: #52B788;
+
+  --color-primary: #40916C;
+  --color-primary-dark: #2D6A4F;
+  --color-primary-light: #52B788;
+  --color-primary-surface: #1B382D;
+
+  --color-saffron: #FBBF24;
+  --color-saffron-dark: #F59E0B;
+  --color-saffron-light: #FEF08A;
+  --color-saffron-surface: #382D10;
+
+  --color-terracotta: #F87171;
+  --color-terracotta-dark: #EF4444;
+  --color-terracotta-surface: #3B1B1B;
+
+  --color-text-main: #F3F4F6;
+  --color-text-secondary: #D1D5DB;
+  --color-text-muted: #9CA3AF;
+  --color-text-inverse: #111827;
+
+  --shadow-xs: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-sm: 0 4px 10px rgba(0, 0, 0, 0.45);
+  --shadow-md: 0 10px 24px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.65);
+}

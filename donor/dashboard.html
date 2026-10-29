@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Donor Dashboard - SharePlate</title>
+  <meta name="description" content="Manage your food donations, post new surplus, and track active food rescue dispatches.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Favicon / Brand Icons -->
+  <link rel="icon" type="image/x-icon" href="../assests/shareplate_logo.ico">
+  <link rel="icon" type="image/svg+xml" href="../assests/shareplate_logo.svg">
+  <link rel="apple-touch-icon" href="../assests/shareplate_logo.png">
+
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="dashboard-body">
+
+  <!-- Top Dashboard Bar -->
+  <header class="navbar" role="banner">
+    <div class="container nav-container">
+      <a href="../index.html" class="brand-logo" aria-label="SharePlate Home">
+        <img src="../assests/shareplate_logo.svg" alt="SharePlate Logo" class="brand-logo-img" width="36" height="36">
+        <span class="logo-text">Share<span>Plate</span></span>
+      </a>
+
+      <!-- Desktop Nav Tabs -->
+      <nav class="nav-menu" aria-label="Donor Navigation">
+        <a href="dashboard.html" class="nav-link active">Dashboard</a>
+        <a href="post-food.html" class="nav-link">Post Food</a>
+        <a href="track.html" class="nav-link">Track Delivery</a>
+        <a href="profile.html" class="nav-link">Donor Profile</a>
+      </nav>
+
+      <div class="nav-actions">
+        <!-- Notification Bell Dropdown -->
+        <div class="notification-wrapper">
+          <button class="btn-icon notification-bell-btn" aria-label="Notifications">
+            🔔
+            <span class="notification-badge" style="display:none;">0</span>
+          </button>
+          <div class="notification-dropdown">
+            <div class="notification-header">
+              <span>Alerts & Notifications</span>
+              <span style="font-size:11px;color:var(--color-primary);font-weight:600;">Live Feed</span>
+            </div>
+            <div class="notification-list"></div>
+          </div>
+        </div>
+
+        <!-- Theme Toggle -->
+        <button class="btn-icon theme-toggle-btn" aria-label="Toggle Dark Mode">
+          <span class="theme-icon-moon">🌙</span>
+          <span class="theme-icon-sun" style="display:none;">☀️</span>
+        </button>
+
+        <!-- User Profile Area -->
+        <div id="user-nav-profile"></div>
+
+        <!-- Mobile Hamburger Button -->
+        <button class="hamburger-btn" aria-label="Toggle navigation menu" aria-expanded="false">
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Right-to-Left Slide Drawer -->
+    <div class="mobile-nav-drawer" role="navigation" aria-label="Mobile Navigation">
+      <a href="dashboard.html" class="nav-link active">📊 Donor Dashboard</a>
+      <a href="post-food.html" class="nav-link">🍲 Post Surplus Food</a>
+      <a href="track.html" class="nav-link">🚚 Track Deliveries</a>
+      <a href="profile.html" class="nav-link">👤 Kitchen Profile</a>
+      <hr style="border:none;border-top:1px solid var(--color-border);margin-block:var(--space-2xs);">
+      <a href="../receiver/feed.html" class="nav-link">🤝 Receiver Feed</a>
+      <a href="../volunteer/tasks.html" class="nav-link">🚴 Volunteer Portal</a>
+      <a href="../admin/dashboard.html" class="nav-link">⚡ Admin Console</a>
+      <a href="../index.html" class="nav-link">🏠 Public Home</a>
+    </div>
+  </header>
+
+  <main class="dashboard-main">
+    <div class="container" style="padding-top:var(--space-lg);">
+      <!-- Greeting & Actions -->
+      <div class="dashboard-header-flex" style="margin-bottom:var(--space-lg);">
+        <div class="dashboard-title-group">
+          <div style="display:flex; align-items:center; gap:var(--space-xs); margin-bottom:4px;">
+            <span class="role-badge role-badge-donor">Donor Kitchen</span>
+            <span style="font-size:12px; color:var(--color-success); font-weight:600;">● Verified PFA Certified</span>
+          </div>
+          <h1 id="donor-greeting" style="font-size:var(--font-size-2xl);">Welcome, Nishat Banquets</h1>
+          <p style="font-size:var(--font-size-sm); color:var(--color-text-secondary);">
+            Your surplus food feeds 150+ shelter residents across Lahore every week.
+          </p>
+        </div>
+        <div>
+          <a href="post-food.html" class="btn btn-primary btn-lg">
+            + Post Food Surplus
+          </a>
+        </div>
+      </div>
+
+      <!-- KPI Grid -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-icon-wrap kpi-icon-saffron">🍲</div>
+          <div>
+            <div class="kpi-value" id="donor-meals-count">850</div>
+            <div class="kpi-label">Meals Shared to Date</div>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-icon-wrap kpi-icon-green">📦</div>
+          <div>
+            <div class="kpi-value" id="donor-active-count">2 Active</div>
+            <div class="kpi-label">Current Live Listings</div>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-icon-wrap kpi-icon-terracotta">⭐</div>
+          <div>
+            <div class="kpi-value">4.95 / 5.0</div>
+            <div class="kpi-label">Food Quality & Hygiene Rating</div>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-icon-wrap kpi-icon-blue">🌱</div>
+          <div>
+            <div class="kpi-value">1,105 kg</div>
+            <div class="kpi-label">CO2e Landfill Emissions Saved</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Wedding Mode Alert Banner -->
+      <div class="card" style="background:linear-gradient(135deg, var(--color-saffron-surface) 0%, var(--color-surface) 100%); border-color:rgba(245,158,11,0.4); padding:var(--space-md) var(--space-lg); margin-bottom:var(--space-xl);">
+        <div class="flex-between" style="flex-wrap:wrap; gap:var(--space-sm);">
+          <div style="display:flex; align-items:center; gap:var(--space-sm);">
+            <span style="font-size:24px;">💍</span>
+            <div>
+              <strong style="font-size:14px; color:var(--color-text-main);">Hosting a Banquet or Wedding Reception Soon?</strong>
+              <div style="font-size:12px; color:var(--color-text-secondary);">
+                Pre-schedule a collection with "Wedding Mode". Volunteers reserve insulated vans to arrive by 11:30 PM.
+              </div>
+            </div>
+          </div>
+          <a href="post-food.html?mode=wedding" class="btn btn-primary btn-sm">Schedule Wedding Surplus</a>
+        </div>
+      </div>
+
+      <!-- Active Food Postings Section -->
+      <div style="margin-bottom:var(--space-2xl);">
+        <div class="flex-between" style="margin-bottom:var(--space-md);">
+          <div>
+            <h2 style="font-size:var(--font-size-xl);">Your Active Surplus Postings</h2>
+            <p style="font-size:var(--font-size-xs); color:var(--color-text-secondary);">Live status in local receiver feeds with real-time countdown</p>
+          </div>
+          <a href="post-food.html" class="btn btn-outline btn-sm">+ Post Another</a>
+        </div>
+
+        <div id="donor-listings-grid" class="grid-cols-2">
+          <!-- Injected dynamically via script -->
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Mobile Fixed Bottom Tab Bar -->
+  <nav class="bottom-tab-bar" aria-label="Mobile Bottom Navigation">
+    <a href="dashboard.html" class="tab-item active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+      <span>Home</span>
+    </a>
+    <a href="post-food.html" class="tab-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="12" y1="8" x2="12" y2="16"/>
+        <line x1="8" y1="12" x2="16" y2="12"/>
+      </svg>
+      <span>Post</span>
+    </a>
+    <a href="track.html" class="tab-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"/>
+        <polyline points="12 6 12 12 16 14"/>
+      </svg>
+      <span>Track</span>
+    </a>
+    <a href="profile.html" class="tab-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+      <span>Profile</span>
+    </a>
+  </nav>
+
+  <script src="../js/data.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/ui.js"></script>
+  <script src="../js/donations.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Role Guard
+      SharePlateAuth.requireAuth(['donor']);
+
+      const user = SharePlateAuth.getCurrentUser();
+      if (user && user.organization) {
+        document.getElementById('donor-greeting').textContent = `Welcome, ${user.organization}`;
+      }
+
+      // Load donor's food posts
+      const donations = SharePlateData.getDonations();
+      const container = document.getElementById('donor-listings-grid');
+
+      if (container) {
+        container.innerHTML = donations.slice(0, 4).map(item => `
+          <div class="card">
+            <div class="card-img-wrap">
+              <span class="badge ${item.status === 'available' ? 'badge-safe' : 'badge-saffron'} badge-overlay">
+                ${item.status === 'available' ? 'Live on Receiver Feed' : 'Matched / En Route'}
+              </span>
+              ${item.isWeddingSurplus ? '<span class="badge badge-saffron" style="position:absolute;top:8px;right:8px;z-index:2;">💍 Wedding Mode</span>' : ''}
+              <img src="${item.photo}" alt="${item.title}" loading="lazy">
+            </div>
+            <div class="card-body">
+              <h3 class="card-title">${item.title}</h3>
+              <div class="card-meta">
+                <span>📦 ${item.quantity}</span>
+                <span>📍 ${item.address}</span>
+              </div>
+              <div style="margin-top:auto; padding-top:var(--space-xs);">
+                <div class="countdown-chip" data-countdown-until="${item.safeUntil}">
+                  Safe for 2h 15m
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <span style="font-size:var(--font-size-xs); color:var(--color-text-secondary);">
+                Status: <strong>${item.status}</strong>
+              </span>
+              <a href="track.html?id=${item.id}" class="btn btn-outline btn-sm">
+                Track Delivery &rarr;
+              </a>
+            </div>
+          </div>
+        `).join('');
+
+        SharePlateDonations.startCountdownLoop();
+      }
+    });
+  </script>
+</body>
+</html>

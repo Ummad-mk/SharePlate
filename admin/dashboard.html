@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Operations Console - SharePlate</title>
+  <meta name="description" content="Central food rescue platform oversight, donor verification, volunteer dispatches, and metrics audit.">
+
+  <!-- Favicon / Brand Icons -->
+  <link rel="icon" type="image/x-icon" href="../assests/shareplate_logo.ico">
+  <link rel="icon" type="image/svg+xml" href="../assests/shareplate_logo.svg">
+  <link rel="apple-touch-icon" href="../assests/shareplate_logo.png">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .admin-data-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: var(--font-size-xs);
+    }
+    .admin-data-table th {
+      background: var(--color-bg-alt);
+      color: var(--color-text-secondary);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: var(--space-sm) var(--space-md);
+      border-bottom: 2px solid var(--color-border);
+      text-align: left;
+    }
+    .admin-data-table td {
+      padding: var(--space-sm) var(--space-md);
+      border-bottom: 1px solid var(--color-border);
+      vertical-align: middle;
+      background: var(--color-surface);
+    }
+    .admin-data-table tr:hover td {
+      background: var(--color-surface-hover);
+    }
+    .admin-sub-tag {
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: var(--radius-sm);
+      font-size: 10px;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body class="dashboard-body">
+
+  <!-- Top Dashboard Bar -->
+  <header class="navbar" role="banner">
+    <div class="container nav-container">
+      <a href="../index.html" class="brand-logo" aria-label="SharePlate Home">
+        <img src="../assests/shareplate_logo.svg" alt="SharePlate Logo" class="brand-logo-img" width="36" height="36">
+        <span class="logo-text">Share<span>Plate</span></span>
+      </a>
+
+      <!-- Desktop Nav Tabs -->
+      <nav class="nav-menu" aria-label="Admin Navigation">
+        <a href="dashboard.html" class="nav-link active">Console Overview</a>
+        <a href="#audit-feed" class="nav-link">Live Audits</a>
+        <a href="#system-tools" class="nav-link">System Tools</a>
+      </nav>
+
+      <div class="nav-actions">
+        <!-- Notification Bell Dropdown -->
+        <div class="notification-wrapper">
+          <button class="btn-icon notification-bell-btn" aria-label="Notifications">
+            🔔
+            <span class="notification-badge" style="display:none;">0</span>
+          </button>
+          <div class="notification-dropdown">
+            <div class="notification-header">
+              <span>Platform Alerts</span>
+              <span style="font-size:11px;color:var(--color-primary);font-weight:600;">System Log</span>
+            </div>
+            <div class="notification-list"></div>
+          </div>
+        </div>
+
+        <!-- Theme Toggle -->
+        <button class="btn-icon theme-toggle-btn" aria-label="Toggle Dark Mode">
+          <span class="theme-icon-moon">🌙</span>
+          <span class="theme-icon-sun" style="display:none;">☀️</span>
+        </button>
+
+        <!-- User Profile Area -->
+        <div id="user-nav-profile"></div>
+
+        <!-- Mobile Hamburger Button -->
+        <button class="hamburger-btn" aria-label="Toggle navigation menu" aria-expanded="false">
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Right-to-Left Slide Drawer -->
+    <div class="mobile-nav-drawer" role="navigation" aria-label="Mobile Navigation">
+      <a href="dashboard.html" class="nav-link active">⚡ Admin Console</a>
+      <a href="../donor/dashboard.html" class="nav-link">🍲 Donor Portal</a>
+      <a href="../receiver/feed.html" class="nav-link">🤝 Receiver Feed</a>
+      <a href="../volunteer/tasks.html" class="nav-link">🚴 Volunteer Portal</a>
+      <a href="#system-tools" class="nav-link">⚙️ System Tools</a>
+      <hr style="border:none;border-top:1px solid var(--color-border);margin-block:var(--space-2xs);">
+      <a href="../index.html" class="nav-link">🏠 Public Home</a>
+    </div>
+  </header>
+
+  <div class="dashboard-layout">
+    <!-- Desktop Admin Sidebar -->
+    <aside class="admin-sidebar" role="navigation" aria-label="Admin Sidebar">
+      <div style="font-size:11px; font-weight:700; color:var(--color-text-muted); text-transform:uppercase; margin-bottom:var(--space-xs); padding-inline:var(--space-sm);">
+        Platform Controls
+      </div>
+      <a href="dashboard.html" class="sidebar-link active">
+        <span>📊</span> Overview &amp; Health
+      </a>
+      <a href="#audit-feed" class="sidebar-link">
+        <span>🛡️</span> Food Safety &amp; PFA
+      </a>
+      <a href="../volunteer/tasks.html" class="sidebar-link">
+        <span>🚴</span> Dispatches Monitor
+      </a>
+      <a href="../receiver/feed.html" class="sidebar-link">
+        <span>🤝</span> Live Receiver Feed
+      </a>
+      <a href="#system-tools" class="sidebar-link">
+        <span>⚙️</span> Demo Controls
+      </a>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="dashboard-main" style="padding:var(--space-lg);">
+      <div class="container">
+        <!-- Header -->
+        <div class="dashboard-header-flex" style="margin-bottom:var(--space-lg);">
+          <div class="dashboard-title-group">
+            <div style="display:flex; align-items:center; gap:var(--space-xs); margin-bottom:4px;">
+              <span class="role-badge role-badge-admin">Super Admin</span>
+              <span style="font-size:12px; color:var(--color-success); font-weight:600;">● Engine Operational</span>
+            </div>
+            <h1 style="font-size:var(--font-size-2xl);">Platform Operations Console</h1>
+            <p style="font-size:var(--font-size-sm); color:var(--color-text-secondary);">
+              Supervising donor kitchens, verified recipient shelters, volunteer routes, and compliance.
+            </p>
+          </div>
+          <div style="display:flex; gap:var(--space-xs); flex-wrap:wrap;">
+            <button id="btn-broadcast-alert" class="btn btn-outline btn-sm" style="border-color:var(--color-terracotta); color:var(--color-terracotta);">
+              🚨 Broadcast High-Surplus Alert
+            </button>
+            <button id="btn-reset-demo" class="btn btn-primary btn-sm">
+              🔄 Reset Demo State
+            </button>
+          </div>
+        </div>
+
+        <!-- Platform KPI Cards -->
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-icon-wrap kpi-icon-green">🍲</div>
+            <div>
+              <div class="kpi-value" id="admin-total-meals">4,850+</div>
+              <div class="kpi-label">Cumulative Meals Rescued</div>
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-icon-wrap kpi-icon-saffron">⚡</div>
+            <div>
+              <div class="kpi-value" id="admin-active-donations">6 Active</div>
+              <div class="kpi-label">Live Postings on Feed</div>
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-icon-wrap kpi-icon-blue">🚴</div>
+            <div>
+              <div class="kpi-value">12 Volunteers</div>
+              <div class="kpi-label">Swift Wheels Ready</div>
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-icon-wrap kpi-icon-terracotta">🛡️</div>
+            <div>
+              <div class="kpi-value">99.8%</div>
+              <div class="kpi-label">Food Safety Score</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Platform Audit Feed -->
+        <div id="audit-feed" style="margin-bottom:var(--space-2xl);">
+          <div class="flex-between" style="margin-bottom:var(--space-sm);">
+            <div>
+              <h2 style="font-size:var(--font-size-lg);">🛡️ Live Platform Listings &amp; Safety Audits</h2>
+              <p style="font-size:var(--font-size-xs); color:var(--color-text-secondary);">Real-time listings synchronized across donor kitchens and recipient shelters.</p>
+            </div>
+            <button class="btn btn-outline btn-sm" onclick="location.reload()">
+              🔄 Refresh List
+            </button>
+          </div>
+
+          <!-- Responsive Table Container -->
+          <div class="table-responsive" style="border:1px solid var(--color-border); border-radius:var(--radius-lg); overflow:hidden;">
+            <table class="admin-data-table">
+              <thead>
+                <tr>
+                  <th>Item / ID</th>
+                  <th>Donor Entity</th>
+                  <th>Category</th>
+                  <th>Quantity</th>
+                  <th>Safety Window</th>
+                  <th>Status</th>
+                  <th>Quick Action</th>
+                </tr>
+              </thead>
+              <tbody id="admin-listings-tbody">
+                <!-- Dynamically populated from SharePlateData -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- System Controls & Developer Tools -->
+        <div id="system-tools" class="card" style="margin-bottom:var(--space-xl); padding:var(--space-lg);">
+          <h3 style="font-size:var(--font-size-base); margin-bottom:var(--space-xs);">⚙️ Platform Simulator &amp; Test Controls</h3>
+          <p style="font-size:var(--font-size-xs); color:var(--color-text-secondary); margin-bottom:var(--space-md);">
+            Quickly trigger automated simulations to demonstrate new donations, claims, volunteer dispatches, or state resets.
+          </p>
+
+          <div style="display:flex; gap:var(--space-sm); flex-wrap:wrap;">
+            <button id="btn-seed-donation" class="btn btn-outline btn-sm">
+              ➕ Generate Sample Surplus Listing
+            </button>
+            <button id="btn-export-audit" class="btn btn-outline btn-sm">
+              📥 Export Audit Log (JSON)
+            </button>
+            <button id="btn-hard-reset" class="btn btn-terracotta btn-sm">
+              ⚠️ Clean Wipe &amp; Restore Initial State
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/data.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/ui.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Ensure authenticated admin
+      if (!SharePlateAuth.getCurrentUser()) {
+        SharePlateAuth.loginAs('admin');
+      }
+
+      // Initialize UI
+      SharePlateUI.init();
+
+      // Render Admin Table
+      renderAdminTable();
+
+      // Broadcast Alert
+      document.getElementById('btn-broadcast-alert')?.addEventListener('click', () => {
+        SharePlateData.addNotification({
+          title: '🚨 Urgent Surplus Alert',
+          message: 'Banquet Hall surplus posted: 150 hot meals need immediate rescue dispatch.'
+        });
+        SharePlateUI.toast('Broadcast alert dispatched to all nearby shelters & volunteers!', 'success', 3500);
+      });
+
+      // Reset Demo State
+      document.getElementById('btn-reset-demo')?.addEventListener('click', () => {
+        SharePlateData.resetDemoData();
+        SharePlateUI.toast('Demo dataset successfully restored to original baseline.', 'info', 3000);
+        setTimeout(() => location.reload(), 800);
+      });
+
+      document.getElementById('btn-hard-reset')?.addEventListener('click', () => {
+        if (confirm('Restore SharePlate platform demo data to fresh initial values?')) {
+          SharePlateData.resetDemoData();
+          location.reload();
+        }
+      });
+
+      // Seed New Donation
+      document.getElementById('btn-seed-donation')?.addEventListener('click', () => {
+        const sample = SharePlateData.addDonation({
+          title: '50 Fresh Biryani Packs & Salads',
+          category: 'cooked',
+          quantity: '50',
+          servingsEstimate: 50,
+          donor: {
+            name: 'Nishat Banquet & Royal Hall',
+            verified: true,
+            pfa: 'PFA-LHR-2024-9128'
+          },
+          address: 'MM Alam Road, Gulberg III',
+          city: 'Lahore',
+          safeUntil: new Date(Date.now() + 4 * 60 * 60 * 1000).toISOString(),
+          dietary: ['Halal', 'Insulated Sealed'],
+          image: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=600&q=80'
+        });
+        SharePlateUI.toast(`Created new surplus listing: "${sample.title}"!`, 'success', 3000);
+        renderAdminTable();
+      });
+
+      // Export Audit
+      document.getElementById('btn-export-audit')?.addEventListener('click', () => {
+        const data = {
+          timestamp: new Date().toISOString(),
+          donations: SharePlateData.getDonations(),
+          claims: SharePlateData.getClaims(),
+          tasks: SharePlateData.getTasks(),
+          impact: SharePlateData.getImpact()
+        };
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `shareplate_audit_${Date.now()}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+        SharePlateUI.toast('Platform audit log exported successfully.', 'success', 2500);
+      });
+    });
+
+    function renderAdminTable() {
+      const tbody = document.getElementById('admin-listings-tbody');
+      if (!tbody) return;
+
+      const donations = SharePlateData.getDonations();
+      document.getElementById('admin-active-donations').textContent = donations.length + ' Total';
+
+      const impact = SharePlateData.getImpact();
+      if (impact && impact.mealsSaved) {
+        document.getElementById('admin-total-meals').textContent = impact.mealsSaved.toLocaleString() + '+';
+      }
+
+      tbody.innerHTML = donations.map(d => {
+        const isClaimed = d.status === 'claimed' || d.status === 'assigned';
+        const badgeColor = isClaimed ? '#0284C7' : '#15803D';
+        const badgeBg = isClaimed ? '#E0F2FE' : '#DCFCE7';
+
+        return `
+          <tr>
+            <td>
+              <strong style="color:var(--color-primary);">${d.title}</strong>
+              <div style="font-size:10px; color:var(--color-text-muted);">${d.id}</div>
+            </td>
+            <td>
+              <div>${d.donor?.name || 'Local Kitchen'}</div>
+              <span class="admin-sub-tag" style="background:#FEF3C7; color:#B45309;">Verified PFA</span>
+            </td>
+            <td style="text-transform:capitalize;">${d.category || 'Cooked Meals'}</td>
+            <td><strong>${d.quantity}</strong> servings</td>
+            <td>
+              <span style="font-size:11px; color:var(--color-terracotta);">Safe for ~3-4h</span>
+            </td>
+            <td>
+              <span class="admin-sub-tag" style="background:${badgeBg}; color:${badgeColor}; font-weight:700;">
+                ${d.status.toUpperCase()}
+              </span>
+            </td>
+            <td>
+              <button class="btn btn-outline btn-sm" style="padding:2px 8px; font-size:10px;" onclick="SharePlateUI.toast('Safety audit verified for ${d.id}', 'success', 2000)">
+                Audit OK ✓
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+  </script>
+</body>
+</html>
