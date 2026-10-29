@@ -152,3 +152,7 @@ if (document.readyState === 'loading') {
 } else {
   SharePlateAuth.renderUserNav();
 }
+
+// Expose on window: top-level `const` does not create a window property,
+// so feature checks like `window.SharePlateAuth` would otherwise always be false.
+window.SharePlateAuth = SharePlateAuth;

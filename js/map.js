@@ -187,3 +187,7 @@ const SharePlateMap = {
     }
   }
 };
+
+// Expose on window: top-level `const` does not create a window property,
+// so feature checks like `window.SharePlateMap` would otherwise always be false.
+window.SharePlateMap = SharePlateMap;

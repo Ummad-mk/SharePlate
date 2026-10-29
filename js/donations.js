@@ -314,3 +314,7 @@ if (document.readyState === 'loading') {
 } else {
   SharePlateDonations.init();
 }
+
+// Expose on window: top-level `const` does not create a window property,
+// so feature checks like `window.SharePlateDonations` would otherwise always be false.
+window.SharePlateDonations = SharePlateDonations;

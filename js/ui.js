@@ -4,7 +4,14 @@
  */
 
 const SharePlateUI = {
+  _initialized: false,
+
   init() {
+    // Guard against double initialisation (some pages also call init() manually),
+    // which bound every click handler twice: hamburger/theme/bell toggled open
+    // and immediately closed again, so they appeared to do nothing.
+    if (this._initialized) return;
+    this._initialized = true;
     this.initTheme();
     this.initMobileNav();
     this.initNotifications();
@@ -342,3 +349,7 @@ if (document.readyState === 'loading') {
 } else {
   SharePlateUI.init();
 }
+
+// Expose on window: top-level `const` does not create a window property,
+// so feature checks like `window.SharePlateUI` would otherwise always be false.
+window.SharePlateUI = SharePlateUI;

@@ -62,7 +62,7 @@ function initLiveFoodStrip() {
     </div>
   `).join('');
 
-  if (window.SharePlateDonations) {
+  if (typeof SharePlateDonations !== 'undefined') {
     SharePlateDonations.startCountdownLoop();
   }
 }
@@ -160,7 +160,7 @@ function initHomeMapPreview() {
   const maxRetries = 35; // wait up to 3.5s for Leaflet CDN if delayed
 
   const attemptInit = () => {
-    if (typeof L !== 'undefined' && window.SharePlateMap) {
+    if (typeof L !== 'undefined' && typeof SharePlateMap !== 'undefined') {
       SharePlateMap.init('home-map-preview', { isMini: true, zoom: 12 });
 
       // Invalidate size when user scrolls map into view
@@ -187,7 +187,7 @@ function initHomeMapPreview() {
 }
 
 function renderMapFallback(container) {
-  const donations = (window.SharePlateData ? SharePlateData.getDonations() : []).slice(0, 4);
+  const donations = (typeof SharePlateData !== 'undefined' ? SharePlateData.getDonations() : []).slice(0, 4);
   container.innerHTML = `
     <div style="height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; background:var(--color-surface); padding:var(--space-lg); text-align:center;">
       <div style="font-size:2.2rem; margin-bottom:var(--space-xs);">📍</div>
