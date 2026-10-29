@@ -43,6 +43,25 @@
     .admin-data-table tr:hover td {
       background: var(--color-surface-hover);
     }
+    .admin-data-table {
+      min-width: 760px; /* keep columns readable; wrapper scrolls horizontally on phones */
+    }
+    .admin-audit-btn {
+      padding: 4px 10px;
+      font-size: 11px;
+      white-space: nowrap;
+    }
+    .admin-main {
+      padding: var(--space-lg);
+    }
+    @media (max-width: 768px) {
+      .admin-main {
+        padding: var(--space-md) 0 calc(var(--bottom-nav-height) + 32px);
+      }
+      .admin-audit-btn {
+        min-height: 36px;
+      }
+    }
     .admin-sub-tag {
       display: inline-block;
       padding: 2px 6px;
@@ -139,7 +158,7 @@
     </aside>
 
     <!-- Main Content Area -->
-    <main class="dashboard-main" style="padding:var(--space-lg);">
+    <main class="dashboard-main admin-main">
       <div class="container">
         <!-- Header -->
         <div class="dashboard-header-flex" style="margin-bottom:var(--space-lg);">
@@ -211,7 +230,7 @@
           </div>
 
           <!-- Responsive Table Container -->
-          <div class="table-responsive" style="border:1px solid var(--color-border); border-radius:var(--radius-lg); overflow:hidden;">
+          <div class="table-responsive" style="border:1px solid var(--color-border); border-radius:var(--radius-lg);">
             <table class="admin-data-table">
               <thead>
                 <tr>
@@ -258,12 +277,16 @@
   <script src="../js/data.js"></script>
   <script src="../js/auth.js"></script>
   <script src="../js/ui.js"></script>
+  <script src="../js/donations.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // 1. Ensure authenticated admin
+      // 1. Ensure authenticated admin (demo auto-login when nobody is signed in,
+      //    otherwise enforce the role like every other portal page does)
       if (!SharePlateAuth.getCurrentUser()) {
         SharePlateAuth.loginAs('admin');
+        return;
       }
+      if (!SharePlateAuth.requireAuth(['admin'])) return;
 
       // Initialize UI
       SharePlateUI.init();
@@ -298,19 +321,29 @@
       document.getElementById('btn-seed-donation')?.addEventListener('click', () => {
         const sample = SharePlateData.addDonation({
           title: '50 Fresh Biryani Packs & Salads',
-          category: 'cooked',
-          quantity: '50',
+          // Use the same category/type vocabulary as the rest of the app so the
+          // listing shows up under the feed's "Cooked Meals" filter and on the map.
+          category: 'Cooked Meals',
+          type: 'cooked',
+          quantity: '50 servings',
           servingsEstimate: 50,
           donor: {
             name: 'Nishat Banquet & Royal Hall',
+            type: 'Wedding Hall',
+            rating: 4.95,
             verified: true,
             pfa: 'PFA-LHR-2024-9128'
           },
-          address: 'MM Alam Road, Gulberg III',
+          address: 'MM Alam Road, Gulberg III, Lahore',
           city: 'Lahore',
+          lat: 31.5135 + (Math.random() - 0.5) * 0.01,
+          lng: 74.3512 + (Math.random() - 0.5) * 0.01,
+          distance: '1.4 km',
           safeUntil: new Date(Date.now() + 4 * 60 * 60 * 1000).toISOString(),
+          foodSafetyVerified: true,
           dietary: ['Halal', 'Insulated Sealed'],
-          image: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=600&q=80'
+          // was `image`, but every card/popup renders `photo` -> broken image
+          photo: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=600&q=80'
         });
         SharePlateUI.toast(`Created new surplus listing: "${sample.title}"!`, 'success', 3000);
         renderAdminTable();
@@ -364,23 +397,25 @@
               <span class="admin-sub-tag" style="background:#FEF3C7; color:#B45309;">Verified PFA</span>
             </td>
             <td style="text-transform:capitalize;">${d.category || 'Cooked Meals'}</td>
-            <td><strong>${d.quantity}</strong> servings</td>
+            <td><strong>${d.quantity}</strong></td>
             <td>
-              <span style="font-size:11px; color:var(--color-terracotta);">Safe for ~3-4h</span>
+              <span class="countdown-chip" style="font-size:11px;" data-countdown-until="${d.safeUntil}">…</span>
             </td>
             <td>
               <span class="admin-sub-tag" style="background:${badgeBg}; color:${badgeColor}; font-weight:700;">
-                ${d.status.toUpperCase()}
+                ${String(d.status || 'available').replace('_', ' ').toUpperCase()}
               </span>
             </td>
             <td>
-              <button class="btn btn-outline btn-sm" style="padding:2px 8px; font-size:10px;" onclick="SharePlateUI.toast('Safety audit verified for ${d.id}', 'success', 2000)">
+              <button class="btn btn-outline btn-sm admin-audit-btn" onclick="SharePlateUI.toast('Safety audit verified for ${d.id}', 'success', 2000)">
                 Audit OK ✓
               </button>
             </td>
           </tr>
         `;
       }).join('');
+
+      if (typeof SharePlateDonations !== 'undefined') SharePlateDonations.startCountdownLoop();
     }
   </script>
 </body>

@@ -110,7 +110,10 @@ const SharePlateAuth = {
       return false;
     }
 
-    if (allowedRoles.length > 0 && !allowedRoles.includes(user.role)) {
+    // Admins oversee every portal: the admin sidebar/drawer links to the donor,
+    // receiver and volunteer pages, which previously bounced straight back to
+    // the admin console.
+    if (allowedRoles.length > 0 && !allowedRoles.includes(user.role) && user.role !== ROLES.ADMIN) {
       // Redirect to their assigned dashboard
       const target = ROLE_DASHBOARD_ROUTES[user.role].replace(/^\//, isSubdir ? '../' : './');
       window.location.href = target;

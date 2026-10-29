@@ -344,7 +344,9 @@
       // 1. Ensure authenticated volunteer
       if (!SharePlateAuth.getCurrentUser()) {
         SharePlateAuth.loginAs('volunteer');
+        return;
       }
+      if (!SharePlateAuth.requireAuth(['volunteer'])) return;
 
       // Initialize UI
       SharePlateUI.init();
