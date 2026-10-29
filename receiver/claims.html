@@ -143,6 +143,18 @@
         return;
       }
 
+      // Older/seeded claims only store donationId; fill missing details from the
+      // donation so the card doesn't fall back to 'Surplus Food Package'.
+      claims.forEach(claim => {
+        const d = SharePlateData.getDonationById(claim.donationId);
+        if (d) {
+          claim.title = claim.title || d.title;
+          claim.donor = claim.donor || (d.donor && d.donor.name);
+          claim.address = claim.address || d.address;
+        }
+      });
+      const isReceived = c => /received/i.test(c.status || '');
+
       wrap.innerHTML = claims.map(claim => `
         <div class="card" style="padding:var(--space-lg);">
           <div class="flex-between" style="flex-wrap:wrap; gap:var(--space-xs); border-bottom:1px solid var(--color-border); padding-bottom:var(--space-sm); margin-bottom:var(--space-md);">
@@ -163,15 +175,15 @@
 
           <div class="flex-between" style="flex-wrap:wrap; gap:var(--space-sm);">
             <div style="font-size:var(--font-size-xs); color:var(--color-text-secondary);">
-              Claimed: ${new Date(claim.claimedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} • Status: <strong style="color:var(--color-primary);">${claim.status}</strong>
+              Claimed: ${new Date(claim.claimedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} • Status: <strong class="claim-status" style="color:var(--color-primary);">${claim.status}</strong>
             </div>
 
             <div class="flex-center" style="gap:var(--space-xs);">
               <a href="../donor/track.html?id=${claim.donationId}" class="btn btn-outline btn-sm">
                 🚚 Track Dispatch
               </a>
-              <button class="btn btn-green btn-sm confirm-recv-btn" data-id="${claim.claimId}">
-                ✓ Confirm Handover
+              <button class="btn btn-green btn-sm confirm-recv-btn" data-id="${claim.claimId}" ${isReceived(claim) ? 'disabled' : ''}>
+                ${isReceived(claim) ? 'Received &amp; Nourished!' : '✓ Confirm Handover'}
               </button>
             </div>
           </div>
@@ -182,6 +194,10 @@
         btn.addEventListener('click', () => {
           btn.textContent = 'Received & Nourished!';
           btn.disabled = true;
+          // Persist so the status survives a reload (previously it reset to 'Claimed')
+          const updated = SharePlateData.updateClaim(btn.dataset.id, { status: 'Received', receivedAt: new Date().toISOString() });
+          const statusEl = btn.closest('.card')?.querySelector('.claim-status');
+          if (updated && statusEl) statusEl.textContent = updated.status;
           SharePlateUI.toast('Meal reception confirmed! Thank you for nourishing your community.', 'success', 4000);
         });
       });

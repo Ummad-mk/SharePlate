@@ -415,6 +415,10 @@
 
 .dashboard-main {
   flex-grow: 1;
+  /* Flex items default to min-width:auto, so a wide child (e.g. the admin
+     table) stretched the whole main column to ~750px on phones and the
+     overflow was silently clipped by html/body overflow-x:clip. */
+  min-width: 0;
   padding-bottom: calc(var(--bottom-nav-height) + 24px); /* Clearance for mobile tab bar */
 }
 

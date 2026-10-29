@@ -240,7 +240,14 @@
           filtered.sort((a, b) => new Date(a.safeUntil).getTime() - new Date(b.safeUntil).getTime());
         } else if (sortMode === 'nearest') {
           filtered.sort((a, b) => parseFloat(a.distance || 5) - parseFloat(b.distance || 5));
+        } else if (sortMode === 'newest') {
+          // 'Newly posted' option existed but had no branch, so it did nothing
+          filtered.sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
         }
+
+        // Keep the 'All Food (N)' pill in sync (was hard-coded to 6)
+        const allPill = document.querySelector('#category-pills .filter-pill[data-category="all"]');
+        if (allPill) allPill.textContent = `All Food (${donations.length})`;
 
         const container = document.getElementById('feed-grid');
         if (!container) return;
@@ -283,6 +290,17 @@
         });
 
         SharePlateDonations.startCountdownLoop();
+
+        // Map popups link here with ?highlight=<id>; scroll to and flag that card
+        const highlightId = new URLSearchParams(window.location.search).get('highlight');
+        if (highlightId) {
+          const card = container.querySelector(`[data-id="${CSS.escape(highlightId)}"]`);
+          if (card) {
+            card.style.outline = '3px solid var(--color-saffron)';
+            card.style.outlineOffset = '2px';
+            card.scrollIntoView({ block: 'center' });
+          }
+        }
       };
 
       // Filter pills
