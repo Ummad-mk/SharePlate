@@ -127,6 +127,13 @@
   }
 }
 
+@media (max-width: 899px) {
+  .nav-actions > a.btn,
+  .nav-actions > button.btn:not(.btn-icon):not(.hamburger-btn) {
+    display: none !important;
+  }
+}
+
 /* Mobile Hamburger Toggle */
 .hamburger-btn {
   display: flex;
@@ -189,17 +196,17 @@
   pointer-events: auto;
 }
 
-/* Mobile Slide Drawer (Right to Left, max 50vw width) — sits BELOW navbar */
+/* Mobile Slide Drawer (Right to Left) — sits BELOW navbar */
 .mobile-nav-drawer {
   position: fixed;
   top: var(--navbar-height); /* starts just below the navbar row */
   right: 0;
   bottom: 0;
   left: auto;
-  width: 50vw;
-  max-width: 50vw;
-  min-width: 200px;
-  height: auto;           /* fill to bottom of screen, not full 100vh */
+  width: min(320px, 85vw);
+  max-width: 85vw;
+  height: calc(100vh - var(--navbar-height));
+  height: calc(100dvh - var(--navbar-height));
   background: var(--color-surface);
   border-left: 1px solid var(--color-border);
   border-bottom: none;

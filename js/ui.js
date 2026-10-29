@@ -132,6 +132,12 @@ const SharePlateUI = {
     const drawer = document.querySelector('.mobile-nav-drawer');
     if (!drawer) return;
 
+    // Move drawer to document.body to prevent containing block trapping
+    // caused by parent .navbar backdrop-filter / transform
+    if (drawer.parentElement !== document.body) {
+      document.body.appendChild(drawer);
+    }
+
     // Ensure backdrop element exists
     let backdrop = document.querySelector('.mobile-nav-backdrop');
     if (!backdrop) {
@@ -144,6 +150,9 @@ const SharePlateUI = {
     const openDrawer = () => {
       drawer.classList.add('open');
       backdrop.classList.add('open');
+      document.body.classList.add('drawer-open');
+      const navbar = document.querySelector('.navbar');
+      if (navbar) navbar.classList.remove('nav-hidden');
       if (hamburger) {
         hamburger.classList.add('is-active');
         hamburger.setAttribute('aria-expanded', 'true');
@@ -153,6 +162,7 @@ const SharePlateUI = {
     const closeDrawer = () => {
       drawer.classList.remove('open');
       backdrop.classList.remove('open');
+      document.body.classList.remove('drawer-open');
       if (hamburger) {
         hamburger.classList.remove('is-active');
         hamburger.setAttribute('aria-expanded', 'false');

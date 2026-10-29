@@ -24,9 +24,17 @@ h1, h2, h3, h4, h5, h6, p, span, div, a, button {
    Mobile Global Adjustments (Under 768px)
    -------------------------------------------------------------------------- */
 @media (max-width: 768px) {
+  :root {
+    --navbar-height: 60px;
+  }
+
+  body.drawer-open {
+    overflow: hidden;
+  }
+
   /* Navbar containment & padding */
   .navbar {
-    height: 60px;
+    height: var(--navbar-height);
     padding-inline: 0;
   }
 
