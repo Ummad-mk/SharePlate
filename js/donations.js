@@ -189,21 +189,24 @@ const SharePlateDonations = {
         title,
         quantity,
         category,
-        type: category.toLowerCase().includes('cooked') ? 'cooked' : 'packaged',
+        type: ({ 'Cooked Meals': 'cooked', 'Bakery & Bread': 'bakery', 'Raw Produce': 'produce', 'Packaged Snacks': 'packaged', 'Dairy': 'dairy' })[category] || 'cooked',
         photo: uploadedPhotoUrl,
         address,
         safeUntil: new Date(safeUntil).toISOString(),
         isWeddingSurplus: isWedding,
         foodSafetyVerified: true,
         notes,
-        lat: 28.5355 + (Math.random() - 0.5) * 0.05,
-        lng: 77.3910 + (Math.random() - 0.5) * 0.05,
+        // Lahore city centre (the app's service area). The old values were for
+        // Noida, India, so every newly posted donation was pinned ~400 km away
+        // and never visible on the Lahore maps.
+        lat: 31.5204 + (Math.random() - 0.5) * 0.05,
+        lng: 74.3587 + (Math.random() - 0.5) * 0.05,
         distance: (0.5 + Math.random() * 3.5).toFixed(1) + ' km',
         donor: {
           name: currentUser.organization || currentUser.name,
           type: isWedding ? 'Wedding Hall / Caterer' : 'Restaurant / Donor',
           rating: 4.9,
-          phone: '+91 98765 43210'
+          phone: currentUser.phone || '+92 42 3575 8899'
         }
       });
 

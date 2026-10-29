@@ -197,6 +197,9 @@ const SharePlateData = {
         {
           claimId: 'CLM-8821',
           donationId: 'food-104',
+          title: 'Fresh Farm Produce: Apples, Tomatoes & Oranges',
+          donor: 'GreenValley Hypermarket',
+          address: 'Mall of Lahore, Cantonment, Lahore',
           receiverName: 'SOS Children\'s Village Lahore',
           status: 'Claimed',
           claimedAt: new Date(Date.now() - 20 * 60 * 1000).toISOString(),
@@ -333,6 +336,15 @@ const SharePlateData = {
     } catch {
       return [];
     }
+  },
+
+  updateClaim(claimId, updates) {
+    const claims = this.getClaims();
+    const idx = claims.findIndex(c => c.claimId === claimId);
+    if (idx === -1) return null;
+    claims[idx] = { ...claims[idx], ...updates };
+    localStorage.setItem(STORAGE_KEYS.CLAIMS, JSON.stringify(claims));
+    return claims[idx];
   },
 
   getTasks() {

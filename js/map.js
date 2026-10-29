@@ -53,6 +53,12 @@ const SharePlateMap = {
 
     const donations = SharePlateData.getDonations();
 
+    // Resolve the feed link relative to the current page. The hard-coded
+    // '../receiver/feed.html' was wrong from the home page (root level) and
+    // breaks when the site is hosted in a sub-folder (e.g. GitHub Pages).
+    const inSubdir = /\/(donor|receiver|volunteer|admin)\//.test(window.location.pathname);
+    const feedPath = inSubdir ? '../receiver/feed.html' : 'receiver/feed.html';
+
     // Create custom pin icon HTML
     const createPin = (color, emoji) => {
       return L.divIcon({
@@ -87,7 +93,7 @@ const SharePlateMap = {
           <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px;">
             <span style="font-weight:700; color:#F59E0B;">${item.quantity}</span>
             ${item.status === 'available' ? `
-              <button onclick="window.location.href='../receiver/feed.html?highlight=${item.id}'" style="background:#1F5C4A; color:white; border:none; padding:4px 10px; border-radius:12px; font-size:11px; font-weight:600; cursor:pointer;">
+              <button onclick="window.location.href='${feedPath}?highlight=${item.id}'" style="background:#1F5C4A; color:white; border:none; padding:4px 10px; border-radius:12px; font-size:11px; font-weight:600; cursor:pointer;">
                 View
               </button>
             ` : `<span style="font-size:10px; color:#15803D; font-weight:600;">${item.status}</span>`}

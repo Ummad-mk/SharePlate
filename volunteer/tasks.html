@@ -17,7 +17,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- Leaflet Map CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <link rel="stylesheet" href="../lib/leaflet.css">
 
   <link rel="stylesheet" href="../css/style.css">
   <style>
@@ -335,7 +335,7 @@
   </nav>
 
   <!-- Leaflet Map JS -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="../lib/leaflet.js"></script>
   <script src="../js/data.js"></script>
   <script src="../js/auth.js"></script>
   <script src="../js/ui.js"></script>
@@ -370,9 +370,12 @@
       document.getElementById('verify-otp-form')?.addEventListener('submit', (e) => {
         e.preventDefault();
         const code = document.getElementById('shelter-otp-input').value.trim();
-        if (code === '4928' || code.length === 4) {
+        // Previously ANY 4 characters were accepted, so the OTP check was a no-op.
+        // Accept the demo code or an OTP actually issued to a shelter on claim.
+        const issuedOtps = SharePlateData.getClaims().map(c => String(c.otpCode));
+        if (/^\d{4}$/.test(code) && (code === '4928' || issuedOtps.includes(code))) {
           otpDialog.close();
-          SharePlateUI.toast('Mission Success! 60 meals delivered to Robin Hood Shelter.', 'success', 4000);
+          SharePlateUI.toast('Mission Success! Meals handed over to Edhi Foundation Shelter Home.', 'success', 4000);
           document.getElementById('kpi-active-tasks').textContent = '0 Active';
           const container = document.getElementById('active-mission-container');
           container.innerHTML = `
@@ -391,6 +394,29 @@
       });
     });
 
+    // Shown when no real open tasks exist. Accepting one now stores it, so the
+    // 'Accept Rescue' button no longer silently does nothing for these.
+    const SAMPLE_DISPATCHES = [
+      {
+        taskId: 'TSK-402',
+        title: '40 Fresh Sourdough Loaves & Pastries',
+        pickup: 'Jalal Sons Bakery, Main Market Gulberg',
+        dropoff: 'SOS Children\'s Village, Ferozepur Road',
+        distance: '2.4 km route',
+        status: 'available',
+        safeUntil: new Date(Date.now() + 3 * 60 * 60 * 1000).toISOString()
+      },
+      {
+        taskId: 'TSK-403',
+        title: '50 Plates Chicken Dum Biryani & Raita',
+        pickup: 'Nishat Banquet, MM Alam Road, Gulberg III',
+        dropoff: 'Saylani Welfare Trust, Ferozepur Road',
+        distance: '3.1 km route',
+        status: 'available',
+        safeUntil: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString()
+      }
+    ];
+
     function renderVolunteerDispatches() {
       const container = document.getElementById('available-dispatches-list');
       if (!container) return;
@@ -399,27 +425,7 @@
       const openTasks = tasks.filter(t => t.status === 'available' || t.status === 'Claimed');
 
       // Sample mock dispatches if empty
-      const displayTasks = openTasks.length > 0 ? openTasks : [
-        {
-          taskId: 'TSK-402',
-          title: '40 Fresh Sourdough Loaves & Pastries',
-          pickup: 'Jalal Sons Bakery, Main Market Gulberg',
-          dropoff: 'SOS Children\'s Village, Ferozepur Road',
-          distance: '2.4 km route',
-          status: 'available',
-          safeUntil: 'Safe for 3h'
-        },
-        {
-          taskId: 'TSK-403',
-          title: '50 Plates Chicken Dum Biryani & Raita',
-          pickup: 'Nishat Banquet, MM Alam Road, Gulberg III',
-          dropoff: 'Saylani Welfare Trust, Ferozepur Road',
-          distance: '3.1 km route',
-          status: 'available',
-          safeUntil: 'Safe for 2h'
-        }
-      ];
-
+      const displayTasks = openTasks.length > 0 ? openTasks : SAMPLE_DISPATCHES;
       container.innerHTML = displayTasks.map(t => `
         <div class="volunteer-mission-card">
           <div class="flex-between" style="margin-bottom:var(--space-xs);">
@@ -444,7 +450,16 @@
     }
 
     window.acceptMission = function(taskId) {
-      SharePlateData.acceptTask(taskId, 'Hamza Malik');
+      if (!SharePlateData.acceptTask(taskId, 'Hamza Malik')) {
+        const sample = SAMPLE_DISPATCHES.find(t => t.taskId === taskId);
+        if (!sample) {
+          SharePlateUI.toast('This dispatch is no longer available.', 'warning', 3000);
+          return;
+        }
+        const tasks = SharePlateData.getTasks();
+        tasks.unshift({ ...sample, status: 'assigned', volunteerName: 'Hamza Malik' });
+        localStorage.setItem(STORAGE_KEYS.TASKS, JSON.stringify(tasks));
+      }
       SharePlateUI.toast('Mission Accepted! Opening navigation route...', 'success', 3000);
       setTimeout(() => location.reload(), 1000);
     };
